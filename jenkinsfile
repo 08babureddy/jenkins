@@ -6,7 +6,7 @@ pipeline {
                 script {
                     // Running multiple commands in a shell step
                     sh '''
-                    cd ${WORKSPACE}
+                    cd ${space}
                     source venv/bin/activate
                     python -m behave --tags ${Tagname}
                     '''
