@@ -4,7 +4,7 @@ pipeline {
     steps{
     script{
     sh '''
-    "cd ${workspace} "
+    "cd ${workspace}"
     "source venv/bin/activate"
     "python -m behave --tags ${Tagname}"
     '''
@@ -19,7 +19,7 @@ pipeline {
         def build_number = currentBuild.number
         def buildStatus = currentBuild.result
         emailext {
-            subject: "${pipeline_name} - Build # ${buildNumber} - ${buildStatus}" ,
+            subject: "${pipeline_name} - Build # ${buildNumber} - ${buildStatus}",
             body: """
                 <h3> Test Results for Build ${buildNumber} </h3>
                 <p>Status: ${buildStatus}</p>
