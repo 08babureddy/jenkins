@@ -1,13 +1,22 @@
 pipeline {
     agent any
+    environment {
+        WORKSPACE = "${env.WORKSPACE}"
+    }
     stages {
+        stage('Setup') {
+            steps {
+                script {
+                    sh 'python3 -m venv venv'
+                    sh 'source venv/bin/activate && pip install -r requirements.txt'
+                }
+            }
+        }
         stage('Test') {
             steps {
                 script {
                     // Running multiple commands in a shell step
                     sh '''
-                    cd ${space}
-                    source venv/bin/activate
                     python -m behave --tags ${Tagname}
                     '''
                 }
