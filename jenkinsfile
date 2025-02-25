@@ -16,22 +16,24 @@ pipeline {
     }
     post {
         always {
-            // Defining variables for the email content
-            def pipeline_name = env.JOB_NAME
-            def build_number = currentBuild.number
-            def buildStatus = currentBuild.result ?: 'UNKNOWN' // Handling null or empty status
+            script {
+                // Defining variables for the email content inside the script block
+                def pipeline_name = env.JOB_NAME
+                def build_number = currentBuild.number
+                def buildStatus = currentBuild.result ?: 'UNKNOWN' // Handling null or empty status
 
-            // Sending the email with the build status
-            emailext(
-                subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
-                body: """
-                    <h3>Test Results for Build ${build_number}</h3>
-                    <p>Status: ${buildStatus}</p>
-                    <p>Click <a href="">here</a> to view the HTML report.</p>
-                """,
-                to: 'chinnareddy.b@datapoem.com',
-                mimeType: 'text/html'
-            )
+                // Sending the email with the build status
+                emailext(
+                    subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
+                    body: """
+                        <h3>Test Results for Build ${build_number}</h3>
+                        <p>Status: ${buildStatus}</p>
+                        <p>Click <a href="">here</a> to view the HTML report.</p>
+                    """,
+                    to: 'chinnareddy.b@datapoem.com',
+                    mimeType: 'text/html'
+                )
+            }
         }
     }
 }
