@@ -1,0 +1,34 @@
+pipeline {
+    stages {
+    stage('Test'){
+    steps{
+    script{
+    sh '''
+    "cd ${workspace} "
+    "source venv/bin/activate"
+    "python -m behave --tags ${Tagname}"
+    '''
+    }
+
+    }
+    }
+    }
+    post {
+    always {
+        def pipeline_name = env.JOB_NAME
+        def build_number = currentBuild.number
+        def buildStatus = currentBuild.result
+        emailext {
+            subject: "${pipeline_name} - Build # ${buildNumber} - ${buildStatus}" ,
+            body: """
+                <h3> Test Results for Build ${buildNumber} </h3>
+                <p>Status: ${buildStatus}</p>
+                <p>Click <a href="">here</a> to view the HTML report.</p>
+            """,
+            to: 'chinnareddy.b@datapoem.com',
+            mimeType: 'text/html'
+        }
+
+    }}
+
+}
