@@ -17,7 +17,7 @@ pipeline {
                 script {
                     // Running multiple commands in a shell step
                     sh '''
-                    python -m behave --tags ${Tagname}
+                    python -m behave --tags ${tagname}
                     '''
                 }
             }
