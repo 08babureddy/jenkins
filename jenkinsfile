@@ -48,7 +48,6 @@ pipeline {
                         <p><i> The pipeline was run locally by creating it from a GitHub repository. </i></p>
                     """,
                     to: 'chinnareddy.b@datapoem.com',
-                    cc: 'radhika.j@datapoem.com, rohit.c@datapoem.com',
                     mimeType: 'text/html',
                     attachmentsPattern: "results/html/${latest_folder_name}/*.html"
                 )
