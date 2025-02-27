@@ -39,7 +39,7 @@ pipeline {
 
                 // Sending the email with the build status
                 emailext(
-                    subject: "Sample report - ${pipeline_name} - Build #${build_number} - ${buildStatus}",
+                    subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
                     body: """
                         <h3>Test Results for Build ${build_number}</h3>
                         <p>Status: ${buildStatus}</p>
