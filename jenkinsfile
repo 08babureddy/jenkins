@@ -30,9 +30,10 @@ pipeline {
                 def pipeline_name = env.JOB_NAME
                 def build_number = currentBuild.number
                 def buildStatus = currentBuild.result ?: 'UNKNOWN' // Handling null or empty status
-                def latest_folder_path=$(ls -dt ${WORKSPACE}/results/html/* | head -n 1)
-                def latest_folder_name=latest_folder=$(basename "$latest_folder_path")
-                def html_file_path="$(ls -t ${latest_folder_path}/*.html | head -n 1)"
+                def latest_folder_path = sh(script: "ls -dt ${WORKSPACE}/results/html/* | head -n 1", returnStdout: true).trim()
+                def latest_folder_name = sh(script: "basename \"${latest_folder_path}\"", returnStdout: true).trim()
+                def html_file_path = sh(script: "ls -t ${latest_folder_path}/${latest_folder_name}/*.html | head -n 1", returnStdout: true).trim()
+                
 
                 // Sending the email with the build status
                 emailext(
