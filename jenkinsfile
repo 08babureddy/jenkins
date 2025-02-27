@@ -47,7 +47,7 @@ pipeline {
                     """,
                     to: 'chinnareddy.b@datapoem.com',
                     mimeType: 'text/html',
-                    attachmentsPattern: html_file_path
+                    attachmentsPattern: "${latest_folder_path}/*.html"
                 )
             }
         }
