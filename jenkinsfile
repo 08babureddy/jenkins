@@ -35,6 +35,8 @@ pipeline {
                 def latest_folder_name = sh(script: "basename \"${latest_folder_path}\"", returnStdout: true).trim()
 
                 def html_file_path = sh(script: "ls -t ${latest_folder_path}/*.html | head -n 1", returnStdout: true).trim()
+
+                def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
                 
 
                 // Sending the email with the build status
@@ -43,7 +45,7 @@ pipeline {
                     body: """
                         <h3>Test Results for Build ${build_number}</h3>
                         <p>Status: ${buildStatus}</p>
-                        <p>Click <a href="">here</a> to view the HTML report.</p>
+                        <p>Click <a href="file://${latest_folder_path}/${latest_html_file_name}">here</a> to view the HTML report.</p>
                         <h4> ***Checking the format and attachment*** </h4>
                         <p><i> The pipeline was run locally by creating it from a GitHub repository. </i></p>
                     """,
