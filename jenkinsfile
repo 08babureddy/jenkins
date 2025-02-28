@@ -40,21 +40,22 @@ pipeline {
 
                 def json_file_path = sh(script: "ls -t ${WORKSPACE}/results/json/${latest_folder_name}/*.json | head -n 1",returnStdout: true).trim()
 
-                // Read and parse the JSON file
+                // Check if the JSON file exists
+                def jsonFile = new File(json_file_path)
+                if (!jsonFile.exists()) {
+                    error "JSON file not found: ${json_file_path}"
+                }
+
                 def jsonContent = readFile(file: json_file_path)
                 def testResults = new groovy.json.JsonSlurper().parseText(jsonContent)
 
-                // Generate HTML table for test results
-                def htmlTable = "<table border='1' style='border-collapse: collapse;'><tr><th>Test Case</th><th>Test Scenario</th><th>Status</th></tr>"
+                // Start creating the table with only Test Case and Status
+                def htmlTable = "<table border='1' style='border-collapse: collapse;'><tr><th>Test Case</th><th>Status</th></tr>"
 
-                // Iterate over the JSON to create table rows
                 testResults.each { testCaseName, details ->
-                    details.each { scenario, result ->
-                        if (scenario != "unique_test_case_id") {  // Exclude unique_test_case_id
-                            def status = result ? 'Pass' : 'Fail'
-                            htmlTable += "<tr><td>${testCaseName}</td><td>${scenario}</td><td>${status}</td></tr>"
-                        }
-                    }
+                    // Adding the result of the test case (Pass or Fail)
+                    def result = details.any { it.value == false } ? 'Fail' : 'Pass'
+                    htmlTable += "<tr><td>${testCaseName}</td><td>${result}</td></tr>"
                 }
 
                 htmlTable += "</table>"
