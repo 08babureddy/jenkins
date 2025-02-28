@@ -43,17 +43,20 @@ pipeline {
                 def jsonContent = readFile(file: json_file_path)
                 def testResults = new groovy.json.JsonSlurper().parseText(jsonContent)
 
+                def serializableResults = testResults.collectEntries { key, value -> 
+                    [key, value instanceof Map ? value.toMap() : value] 
+                }
+
                 // Start creating the table with only Test Case and Status
                 def htmlTable = "<table border='1' style='border-collapse: collapse;'><tr><th>Test Case</th><th>Status</th></tr>"
 
-                testResults.each { testCaseName, details ->
+                serializableResults.each { testCaseName, details ->
                     // Adding the result of the test case (Pass or Fail)
                     def result = details.any { it.value == false } ? 'Fail' : 'Pass'
                     htmlTable += "<tr><td>${testCaseName}</td><td>${result}</td></tr>"
                 }
 
                 htmlTable += "</table>"
-
                 // Sending the email with the build status
                 emailext(
                     subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
