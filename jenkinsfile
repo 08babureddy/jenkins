@@ -43,8 +43,16 @@ pipeline {
                 def jsonContent = readFile(file: json_file_path)
                 def testResults = new groovy.json.JsonSlurper().parseText(jsonContent)
 
-                def serializableResults = testResults.collectEntries { key, value -> 
-                    [key, value instanceof Map ? value.toMap() : value] 
+                // Manually convert LazyMap to a regular Map to avoid serialization issues
+                def serializableResults = testResults.collectEntries { key, value ->
+                    // If the value is an instance of LazyMap, convert it to a regular Map
+                    if (value instanceof Map) {
+                        return [key, value.collectEntries { subKey, subValue ->
+                            [subKey, subValue]
+                        }]
+                    } else {
+                        return [key, value]
+                    }
                 }
 
                 // Start creating the table with only Test Case and Status
@@ -57,6 +65,7 @@ pipeline {
                 }
 
                 htmlTable += "</table>"
+
                 // Sending the email with the build status
                 emailext(
                     subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
