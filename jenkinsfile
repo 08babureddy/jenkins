@@ -40,12 +40,6 @@ pipeline {
 
                 def json_file_path = sh(script: "ls -t ${WORKSPACE}/results/json/${latest_folder_name}/*.json | head -n 1",returnStdout: true).trim()
 
-                // Check if the JSON file exists
-                def jsonFile = new File(json_file_path)
-                if (!jsonFile.exists()) {
-                    error "JSON file not found: ${json_file_path}"
-                }
-
                 def jsonContent = readFile(file: json_file_path)
                 def testResults = new groovy.json.JsonSlurper().parseText(jsonContent)
 
