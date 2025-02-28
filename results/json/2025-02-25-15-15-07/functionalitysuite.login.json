@@ -1,0 +1,7 @@
+{
+  "TC_001 - I verify the presence of the \"Focused on results not just media metrics.\" text in login page": {
+    "unique_test_case_id": "TC_001",
+    "\"https://green.datapoem.ai\" website open status with xpath \"//h1[contains(text(),'Hey, hello')]/following-sibling::p[contains(text(),'Log into your account with below options')]\" ": true,
+    "\"Banner\" field name with xpath \"//div[@class='carousel-inner']//div[@class='carousel-content']/h1[contains(text(),'Focused on results not just media metrics.')]\" is displayed": true
+  }
+}
