@@ -37,7 +37,27 @@ pipeline {
                 def html_file_path = sh(script: "ls -t ${latest_folder_path}/*.html | head -n 1", returnStdout: true).trim()
 
                 def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
-                
+
+                def json_file_path = sh(script: "ls -t ${WORKSPACE}/results/json/${latest_folder_name}/*.json | head -n 1",returnStdout: true).trim()
+
+                // Read and parse the JSON file
+                def jsonContent = readFile(file: json_file_path)
+                def testResults = new groovy.json.JsonSlurper().parseText(jsonContent)
+
+                // Generate HTML table for test results
+                def htmlTable = "<table border='1' style='border-collapse: collapse;'><tr><th>Test Case</th><th>Test Scenario</th><th>Status</th></tr>"
+
+                // Iterate over the JSON to create table rows
+                testResults.each { testCaseName, details ->
+                    details.each { scenario, result ->
+                        if (scenario != "unique_test_case_id") {  // Exclude unique_test_case_id
+                            def status = result ? 'Pass' : 'Fail'
+                            htmlTable += "<tr><td>${testCaseName}</td><td>${scenario}</td><td>${status}</td></tr>"
+                        }
+                    }
+                }
+
+                htmlTable += "</table>"
 
                 // Sending the email with the build status
                 emailext(
@@ -46,6 +66,8 @@ pipeline {
                         <h3>Test Results for Build ${build_number}</h3>
                         <p>Status: ${buildStatus}</p>
                         <p>Click <a href="file://${latest_folder_path}/${latest_html_file_name}">here</a> to view the HTML report.</p>
+                        <h4>Test Results</h4>
+                        ${htmlTable}
                         <h4> ***Checking the format and attachment*** </h4>
                         <p><i> The pipeline was run locally by creating it from a GitHub repository. </i></p>
                     """,
