@@ -45,11 +45,9 @@ pipeline {
                 emailext(
                     subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
                     body: """
-                        <h3>Test Results for Build ${build_number}</h3>
+                        <h3 style="color: green;">Test Results for Build ${build_number}</h3>
                         <p>Status: ${buildStatus}</p>
                         <p>Click <a href="file://${latest_folder_path}/${latest_html_file_name}">here</a> to view the HTML report.</p>
-                        <h4> ***Checking the format and attachment*** </h4>
-                        <p><i> The pipeline was run locally by creating it from a GitHub repository. </i></p>
                     """,
                     to: 'chinnareddy.b@datapoem.com',
                     mimeType: 'text/html',
