@@ -42,7 +42,6 @@ pipeline {
     post {
         always {
             script {
-                import groovy.util.XmlSlurper
                 def pipeline_name = env.JOB_NAME
                 def build_number = currentBuild.number
                 def buildStatus = currentBuild.result ?: 'UNKNOWN'
@@ -55,79 +54,70 @@ pipeline {
                 def html_file_path = sh(script: "ls -t ${html_folder_path}/*.html | head -n 1", returnStdout: true).trim()
                 def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
 
-                def totalTests = 0
-                def failedTests = []
+                // Parse XML files using readFile and XmlParser
+            def failedTests = []
+            def totalTests = 0
+            def passedTests = 0
+
+            // Get list of XML files
+            def xmlFiles = sh(script: "ls ${xml_folder_path}/*.xml", returnStdout: true).trim().split('\n')
             
-                // Get test statistics using grep
-                sh(script: """
-                for file in ${xml_folder_path}/*.xml; do
-                    echo "Processing: \$file"
-                    # Count total test cases
-                    total=\$(grep -c '<testcase ' "\$file" || true)
-                    totalTests=\$((totalTests + total))
+            xmlFiles.each { xmlFile ->
+                def xmlContent = readFile(xmlFile)
+                def parser = new XmlParser()
+                def testsuite = parser.parseText(xmlContent)
+                
+                testsuite.testcase.each { testcase ->
+                    totalTests++
+                    def suiteName = testcase.@classname.toString()
+                    def testName = testcase.@name.toString()
                     
-                    # Get failed tests
-                    grep -B1 '<failure' "\$file" | grep '<testcase' | while read -r line; do
-                        className=\$(echo "\$line" | sed -n 's/.*classname="\\([^"]*\\).*/\\1/p')
-                        testName=\$(echo "\$line" | sed -n 's/.*name="\\([^"]*\\).*/\\1/p')
-                        echo "\$className|\$testName" >> /tmp/failed_tests.txt
-                    done
-                done
-            """, returnStatus: true)
-
-            // Read failed tests
-            def failedTestsContent = sh(script: """
-                if [ -f /tmp/failed_tests.txt ]; then
-                    cat /tmp/failed_tests.txt
-                    rm /tmp/failed_tests.txt
-                fi
-            """, returnStdout: true).trim()
-
-            // Create table rows for failed tests
-            def tableRows = ""
-            if (failedTestsContent) {
-                failedTestsContent.split('\n').each { line ->
-                    def (className, testName) = line.split('\\|')
-                    tableRows += """
-                        <tr>
-                            <td style="padding: 8px; border: 1px solid #ddd;">${className}</td>
-                            <td style="padding: 8px; border: 1px solid #ddd;">${testName}</td>
-                        </tr>
-                    """
+                    if (testcase.failure) {
+                        failedTests << [suite: suiteName, test: testName]
+                    } else {
+                        passedTests++
+                    }
                 }
             }
 
-            // Calculate total failed tests
-            def failedCount = failedTestsContent ? failedTestsContent.split('\n').size() : 0
-            def passedCount = totalTests - failedCount
-            
-            // Calculate percentages
-            def passPercentage = totalTests > 0 ? ((passedCount / totalTests) * 100).round(2) : 0
-            def failPercentage = totalTests > 0 ? ((failedCount / totalTests) * 100).round(2) : 0
+            // Create table rows for test results
+            def tableRows = failedTests.isEmpty() ? 
+                "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>" :
+                failedTests.collect { test ->
+                    """<tr>
+                        <td style='padding:8px;border:1px solid #ddd'>${test.suite}</td>
+                        <td style='padding:8px;border:1px solid #ddd'>${test.test}</td>
+                    </tr>"""
+                }.join("\n")
 
-            // Create email body with summary and failed tests table
+            // Calculate percentages
+            def passPercentage = (passedTests / totalTests * 100).round(2)
+            def failPercentage = ((totalTests - passedTests) / totalTests * 100).round(2)
+
+            // Create email body
             def emailBody = """
                 <html>
-                <body style="font-family: Arial, sans-serif;">
-                    <h2 style="color: #333;">Test Execution Summary</h2>
-                    <div style="margin-bottom: 20px;">
-                        <p><strong>Total Tests:</strong> ${totalTests}</p>
-                        <p><strong>Passed:</strong> ${passedCount} (${passPercentage}%)</p>
-                        <p><strong>Failed:</strong> ${failedCount} (${failPercentage}%)</p>
+                <body style='font-family: Arial, sans-serif;'>
+                    <h2>Test Execution Report</h2>
+                    <div style='margin-bottom: 20px;'>
+                        <h3>Summary:</h3>
+                        <ul>
+                            <li>Total Tests: ${totalTests}</li>
+                            <li>Passed: ${passedTests} (${passPercentage}%)</li>
+                            <li>Failed: ${totalTests - passedTests} (${failPercentage}%)</li>
+                        </ul>
                     </div>
                     
-                    <h3 style="color: #333;">Failed Test Cases</h3>
-                    <table style="border-collapse: collapse; width: 100%; margin-top: 10px;">
-                        <tr style="background-color: #f2f2f2;">
-                            <th style="padding: 12px; border: 1px solid #ddd;">Test Suite</th>
-                            <th style="padding: 12px; border: 1px solid #ddd;">Test Case</th>
+                    <h3>Failed Test Cases:</h3>
+                    <table style='border-collapse: collapse; width: 100%;'>
+                        <tr style='background-color: #f2f2f2;'>
+                            <th style='padding: 8px; border: 1px solid #ddd;'>Test Suite</th>
+                            <th style='padding: 8px; border: 1px solid #ddd;'>Test Case</th>
                         </tr>
-                        ${tableRows ?: '<tr><td colspan="2" style="text-align:center; padding: 8px;">No Failed Test Cases</td></tr>'}
+                        ${tableRows}
                     </table>
                     
-                    <p style="margin-top: 20px;">
-                        <a href="file://${html_folder_path}/${latest_html_file_name}" style="color: #0066cc;">View Full HTML Report</a>
-                    </p>
+                    <p>Click <a href="file://${html_folder_path}/${latest_html_file_name}">here</a> to view the detailed HTML report.</p>
                 </body>
                 </html>
             """
