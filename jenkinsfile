@@ -15,13 +15,16 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Running multiple commands in a shell step
-                    sh '''
-                    source venv/bin/activate && python -m behave --tags ${tagname}
-                    '''
-                    env.current_run_folder = sh(script: "echo \$TEST_REPORT_PATH", returnStdout: true).trim()
-                    sh ''' echo $env.current_run_folder '''
-                }
+                        // Run tests and capture the folder name directly from output
+                        def current_run_folder = sh(script: '''
+                            source venv/bin/activate && python -m behave --tags ${tagname} | tee /dev/stderr | grep "TEST_REPORT_PATH=" | cut -d "=" -f2
+                        ''', returnStdout: true).trim()
+                        
+                        echo "Captured Folder: ${current_run_folder}"
+                        
+                        // Store it for later use
+                        env.CURRENT_RUN_FOLDER = current_run_folder
+                    }
                 
             }
         }
