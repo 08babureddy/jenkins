@@ -72,7 +72,6 @@ pipeline {
                             }
                         }
                     }
-
                     def tableRows = failedTests.isEmpty() ? 
                         "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>" :
                         failedTests.collect { "<tr><td>${it[0]}</td><td>${it[1]}</td></tr>" }.join("\n")
