@@ -8,6 +8,6 @@ def before_all(context):
    print("Started Execution")
    print("*****************")
    print("*****************")
-   sys.stdout.flush()
+   print(f"TEST_REPORT_PATH={xmlreport_dir_path}", flush=True)
 def after_all(context):
    print("Test execution completed.")
