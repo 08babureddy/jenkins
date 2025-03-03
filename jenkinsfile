@@ -15,15 +15,19 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    def current_run_folder = sh(script: '''
-                        source venv/bin/activate && python -m behave --tags ${tagname} | tee /dev/stderr | grep "TEST_REPORT_PATH=" | cut -d "=" -f2
-                    ''', returnStdout: true).trim()
-                    
-                    echo "Captured Folder Name: ${current_run_folder}"
-                    
-                    // Store in Jenkins environment for later use in post section
-                    env.CURRENT_RUN_FOLDER = current_run_folder
-                }
+            def test_output = sh(script: '''
+                source venv/bin/activate && python -m behave --tags ${tagname}
+            ''', returnStdout: true).trim()
+
+            echo "FULL OUTPUT:\n${test_output}"  // Debugging step
+
+            def current_run_folder = sh(script: '''
+                echo "${test_output}" | grep "TEST_REPORT_PATH=" | cut -d "=" -f2
+            ''', returnStdout: true).trim()
+
+            echo "Captured Folder Name: ${current_run_folder}"
+            env.CURRENT_RUN_FOLDER = current_run_folder
+        }
                 
             }
         }
