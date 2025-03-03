@@ -108,14 +108,18 @@ pipeline {
                 <html>
                 <body style='font-family: Arial, sans-serif;'>
                     <h2>Test Execution Report</h2>
-                    <div style='margin-bottom: 20px;'>
-                        <h3>Summary:</h3>
+                    <div style="display: flex; align-items: center; margin-bottom: 20px;">
+                            <h3 style="margin-right: 10px;">Summary:</h3>
+                            <div style="width: 200px; height: 20px; border: 1px solid #000; display: flex;">
+                                <div style="width: ${passPercentage}%; background-color: green; height: 100%;"></div>
+                                <div style="width: ${failPercentage}%; background-color: red; height: 100%;"></div>
+                            </div>
+                        </div>
                         <ul>
                             <li>Total Tests: ${totalTests}</li>
                             <li>Passed: ${passedTests} (${passPercentage}%)</li>
                             <li>Failed: ${failedTests.size()} (${failPercentage}%)</li>
                         </ul>
-                    </div>
 
                     <h3>Failed Test Cases:</h3>
                     <table style='border-collapse: collapse; width: 100%;'>
