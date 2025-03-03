@@ -61,7 +61,7 @@ pipeline {
                     def xmlFiles = new File(xml_folder_path).listFiles().findAll { it.name.endsWith('.xml') }
                     
                     xmlFiles.each { file ->
-                        def xml = new XmlSlurper().parse(file)
+                        def xml = new groovy.util.XmlSlurper().parse(file)
                         def suiteName = xml.@name.text()
                         
                         xml.testcase.each { testcase ->
