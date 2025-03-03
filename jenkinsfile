@@ -1,3 +1,4 @@
+import groovy.xml.XmlSlurper
 pipeline {
     agent any
     environment {
@@ -60,7 +61,48 @@ pipeline {
 
                 def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
 
-                
+                def sendEmailWithFailedTests(String xml_folder_path) {
+                            def failedTests = []
+                        
+                            // Read all XML files from the given folder
+                            def xmlFiles = new File(xml_folder_path).listFiles().findAll { it.name.endsWith('.xml') }
+                        
+                            xmlFiles.each { file ->
+                                def xml = new XmlSlurper().parse(file)
+                                def suiteName = xml.@name.text()  // Extract test suite name
+                                
+                                xml.testcase.each { testcase ->
+                                    if (testcase.failure || testcase.error) { // If test case failed
+                                        def testCaseName = testcase.@name.text()
+                                        failedTests << [suiteName, testCaseName]
+                                    }
+                                }
+                            }
+                        
+
+                            // Prepare HTML table for failed tests
+                            def tableRows
+                            if (failedTests.isEmpty()) {
+                                    tableRows = "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>"
+                            } else {
+                                    tableRows = failedTests.collect { "<tr><td>${it[0]}</td><td>${it[1]}</td></tr>" }.join("\n")
+                            }
+                        
+                            def emailBody = """
+                                <html>
+                                <body>
+                                    <h2>Test Execution Report</h2>
+                                    <h3>Failed Test Cases</h3>
+                                    <table border="1" cellspacing="0" cellpadding="5">
+                                        <tr>
+                                            <th>Test Suite</th>
+                                            <th>Test Case</th>
+                                        </tr>
+                                        ${tableRows}
+                                    </table>
+                                </body>
+                                </html>
+                            """
 
                 // Sending the email with the build status
                 emailext(
@@ -68,6 +110,7 @@ pipeline {
                     body: """
                         <h3 style="color: green;">Test Results for Build ${build_number}</h3>
                         <p>Status: ${buildStatus}</p>
+                        emailBody
                         <p>Click <a href="file://${html_folder_path}/${latest_html_file_name}">here</a> to view the HTML report.</p>
                     """,
                     to: 'chinnareddy.b@datapoem.com',
