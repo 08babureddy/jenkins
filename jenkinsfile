@@ -16,17 +16,17 @@ pipeline {
             steps {
                 script {
             def test_output = sh(script: '''
-                source venv/bin/activate && python -m behave --tags ${tagname}
-            ''', returnStdout: true).trim()
+                        source venv/bin/activate && python -m behave --tags ${tagname}
+                    ''', returnStdout: true).trim()
 
-            echo "FULL OUTPUT:\n${test_output}"  // Debugging step
+                    echo "FULL OUTPUT:\n${test_output}"  // Debugging step
 
-            def current_run_folder = sh(script: '''
-                echo "${test_output}" | grep "TEST_REPORT_PATH=" | cut -d "=" -f2
-            ''', returnStdout: true).trim()
+                    def current_run_folder = sh(script: '''
+                        echo "${test_output}" | grep "TEST_REPORT_PATH=" | cut -d "=" -f2
+                    ''', returnStdout: true).trim()
 
-            echo "Captured Folder Name: ${current_run_folder}"
-            env.CURRENT_RUN_FOLDER = current_run_folder
+                    echo "Captured Folder Name: ${current_run_folder}"
+                    env.CURRENT_RUN_FOLDER = current_run_folder
         }
                 
             }
