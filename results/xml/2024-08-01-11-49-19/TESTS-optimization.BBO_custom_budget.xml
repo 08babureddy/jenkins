@@ -1,40 +1,36 @@
-<testsuite name="optimization.BBO_custom_budget.BBO-New Custom Budget brand delivery testing scenarios" tests="1" errors="0" failures="1" skipped="0" time="174.411054" timestamp="2024-08-02T04:15:08.064628" hostname="BabuReddy.local"><testcase classname="optimization.BBO_custom_budget.BBO-New Custom Budget brand delivery testing scenarios" name="BBO-Custom Input-Contraints-3 Months-LevelFour-LTROI 0" status="failed" time="174.411054"><failure type="AssertionError" message="'&lt;class 'AssertionError'&gt;':'Couldn't select/ find '3' option in Field 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'':'&lt;traceback object at 0x150ba92c0&gt;' occurred ">
+<testsuite name="functionalitysuite.custom_budget_input.BBO custom budget input functionality test cases" tests="1" errors="0" failures="1" skipped="0" time="34.012316" timestamp="2025-03-03T14:34:53.697500" hostname="BabuReddy.local"><testcase classname="functionalitysuite.custom_budget_input.BBO custom budget input functionality test cases" name="TC_070 - I click on &quot;Custom budget input&quot; and verify that the custom budget input fields are displayed correctly" status="failed" time="34.012316"><failure type="AssertionError" message="'&lt;class 'AssertionError'&gt;':'Field 'Pristine Button' having xpath '//span[text()='pristine']/parent::div' is not displayed. Expected to be displayed':'&lt;traceback object at 0x122795740&gt;' occurred ">
 <![CDATA[
-Failing step: And Dp: I select dropdown value with "3" option by scrolling in field "No of months" with xpath "BBO['BBO_DRPDWNS'].replace('~','Number of months')" ... failed in 2.933s
-Location: features/optimization/BBO_custom_budget.feature:5286
-Assertion Failed: '<class 'AssertionError'>':'Couldn't select/ find '3' option in Field 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'':'<traceback object at 0x150ba92c0>' occurred 
+Failing step: And Dp: I verify if field "Pristine Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')" is displayed ... failed in 10.309s
+Location: features/functionalitysuite/custom_budget_input.feature:49
+Assertion Failed: '<class 'AssertionError'>':'Field 'Pristine Button' having xpath '//span[text()='pristine']/parent::div' is not displayed. Expected to be displayed':'<traceback object at 0x122795740>' occurred 
 Captured stdout:
-Dp Server UI opened successfully with URL 'https://green.datapoem.ai/gupt-login'
-Successfully logged into CMS Server UI with username 'OptimisationTesting@datapoem.com', password 'OptimisationTesting@datapoem.com'
+Dp Server UI opened successfully with URL 'https://qa.datapoem.ai/gupt-login'
+Successfully logged into DP Server UI with username 'OptimisationTesting@datapoem.com', password 'OptimisationTesting@datapoem.com'
 Successfully Hovered mouse on element 'Solutions' with xpath '//span[normalize-space()='Future Planning']'
 Successfully Hovered mouse on element 'Optimization' with xpath '//span[normalize-space()='Optimization']'
 Successfully Clicked element 'Optimization' with xpath '//span[normalize-space()='Optimization']'
-Field 'custom budget field' having xpath '//span[text()='Custom budget input']/parent::div' is found within '20' seconds
-Successfully selected 'Dove Female BW' option in Field 'Brand' having xpath '//div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
-Successfully added sleep for 2 seconds 
-Field 'custom budget field' having xpath '//span[text()='Custom budget input']/parent::div' is found within '20' seconds
+Field 'BBO Header text' having xpath '//span[contains(text(),'Budget Based Optimization')]' is found within '30' seconds
 Successfully scrolled till 'Custom budget input' having xpath '//span[text()='Custom budget input']/parent::div'
 Successfully added sleep for 2 seconds 
 Successfully Clicked element 'Custom budget input' with xpath '//span[text()='Custom budget input']/parent::div'
-Successfully scrolled till 'Constraints' having xpath '//span[text()='Constraints']/parent::div'
-Successfully Clicked element 'Constraints' with xpath '//span[text()='Constraints']/parent::div'
-Successfully scrolled till 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Field 'Step 1: Budget input options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')]' is displayed in UI  as Expected
+Field 'Step 1.1: Optimization options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')]' is displayed in UI  as Expected
 
 Captured stderr:
-ERRORED DESC	::Couldn't select/ find '3' option in Field 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]':
+ERRORED DESC	::Field 'Pristine Button' having xpath '//span[text()='pristine']/parent::div' is not displayed. Expected to be displayed:
 ERRORED MODULE	::<class 'AssertionError'>:
 ERRORED FILE	::common_server_ui_steps.py:
-ERRORED LINE	::639:
+ERRORED LINE	::400:
 
 Captured logging:
 INFO:root:Started step.name: Dp: I open dp Server and verify "LOGIN['FORGOT_PASSWORD']" xpath is visible
 INFO:root:Input params for step: 'LOGIN['FORGOT_PASSWORD']'
 INFO:root:Maximized the browser in control
-INFO:root:Opening the URL 'https://green.datapoem.ai/gupt-login'
+INFO:root:Opening the URL 'https://qa.datapoem.ai/gupt-login'
 INFO:root:found xpath //a[contains(text(),' Forgot Password ?')]
 INFO:root:xpath //a[contains(text(),' Forgot Password ?')] exists
-INFO:root:Opened https://green.datapoem.ai/gupt-login DataPoem URL successfully
-INFO:root:Dp Server UI opened successfully with URL 'https://green.datapoem.ai/gupt-login'
+INFO:root:Opened https://qa.datapoem.ai/gupt-login DataPoem URL successfully
+INFO:root:Dp Server UI opened successfully with URL 'https://qa.datapoem.ai/gupt-login'
 INFO:root:Completed step.name: Dp: I open dp Server and verify "LOGIN['FORGOT_PASSWORD']" xpath is visible
 INFO:root:Status for Step : Status.passed
 INFO:root:Started step.name: Dp: I login to dp and verify dashboard page opens
@@ -54,6 +50,7 @@ INFO:root:found text '' in //input[@id='login-password']
 INFO:root:Entered OptimisationTesting@datapoem.com in xpath //input[@id='login-password']
 INFO:root:found xpath //button[contains(text(),' Sign in with email ')]
 INFO:root:Clicked on xpath //button[contains(text(),' Sign in with email ')]
+INFO:root:CREATED AUTHKEY
 INFO:root:found xpath //h1[contains(text(),'Welcome')]/span
 INFO:root:Successfully logged into DP Server UI with username 'OptimisationTesting@datapoem.com', password 'OptimisationTesting@datapoem.com'
 INFO:root:Completed step.name: Dp: I login to dp and verify dashboard page opens
@@ -83,47 +80,11 @@ INFO:root:Clicked on xpath //span[normalize-space()='Optimization']
 INFO:root:Successfully Clicked element 'Optimization' with xpath '//span[normalize-space()='Optimization']'
 INFO:root:Completed step.name: Dp: I Click on field "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')"
 INFO:root:Status for Step : Status.passed
-INFO:root:Started step.name: Dp: I explicitly wait for "20" seconds for field "custom budget field" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" to appear or clickable
-INFO:root:Input params for step: '20', 'custom budget field', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')'
-INFO:root:found xpath //span[text()='Custom budget input']/parent::div
-INFO:root:Field 'custom budget field' having xpath '//span[text()='Custom budget input']/parent::div' is found within '20' seconds
-INFO:root:Completed step.name: Dp: I explicitly wait for "20" seconds for field "custom budget field" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" to appear or clickable
-INFO:root:Status for Step : Status.passed
-INFO:root:Started step.name: Dp: I select dropdown value with "context.brand" option by scrolling in field "Brand" with xpath "BBO['BBO_DRPDWNS'].replace('~','Brand')"
-INFO:root:Input params for step: 'context.brand', 'Brand', 'BBO['BBO_DRPDWNS'].replace('~','Brand')'
-INFO:root:Clicking on the drop down for given Dove Female BW://div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')] element
-INFO:root:found xpath //div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:found xpath //div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:found text 'NIC ICE Klondike' in //div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:Default value selected :'NIC ICE Klondike' and option to select is 'Dove Female BW'
-INFO:root:found xpath //div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:Clicked on xpath //div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:found xpath //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"Dove Female BW")]
-INFO:root:xpath Element //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"Dove Female BW")] is displayed
-INFO:root:Dove Female BW option is visible in drop down
-INFO:root:Scrolling till element //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"Dove Female BW")]
-INFO:root:found xpath //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"Dove Female BW")]
-INFO:root:xpath Element //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"Dove Female BW")] is displayed
-INFO:root://div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"Dove Female BW")] is displayed on web page
-INFO:root:Scrolling...
-INFO:root:found xpath //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"Dove Female BW")]
-INFO:root:Clicked on xpath //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"Dove Female BW")]
-INFO:root:Dove Female BW value selected successfully from the dropdown
-INFO:root:Successfully selected 'Dove Female BW' option in Field 'Brand' having xpath '//div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
-INFO:root:Completed step.name: Dp: I select dropdown value with "context.brand" option by scrolling in field "Brand" with xpath "BBO['BBO_DRPDWNS'].replace('~','Brand')"
-INFO:root:Status for Step : Status.passed
-INFO:root:Started step.name: Dp: Added sleep for "2" secs
-INFO:root:Input params for step: '2'
-INFO:root:Sleep 2 seconds has started.
-INFO:root:Sleep 2 seconds has completed.
-INFO:root:Successfully added sleep for 2 seconds 
-INFO:root:Completed step.name: Dp: Added sleep for "2" secs
-INFO:root:Status for Step : Status.passed
-INFO:root:Started step.name: Dp: I explicitly wait for "20" seconds for field "custom budget field" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" to appear or clickable
-INFO:root:Input params for step: '20', 'custom budget field', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')'
-INFO:root:found xpath //span[text()='Custom budget input']/parent::div
-INFO:root:Field 'custom budget field' having xpath '//span[text()='Custom budget input']/parent::div' is found within '20' seconds
-INFO:root:Completed step.name: Dp: I explicitly wait for "20" seconds for field "custom budget field" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" to appear or clickable
+INFO:root:Started step.name: Dp: I explicitly wait for "30" seconds for field "BBO Header text" with xpath "BBO['BBO_TEXT'].replace('~','Budget Based Optimization')" to appear or clickable
+INFO:root:Input params for step: '30', 'BBO Header text', 'BBO['BBO_TEXT'].replace('~','Budget Based Optimization')'
+INFO:root:found xpath //span[contains(text(),'Budget Based Optimization')]
+INFO:root:Field 'BBO Header text' having xpath '//span[contains(text(),'Budget Based Optimization')]' is found within '30' seconds
+INFO:root:Completed step.name: Dp: I explicitly wait for "30" seconds for field "BBO Header text" with xpath "BBO['BBO_TEXT'].replace('~','Budget Based Optimization')" to appear or clickable
 INFO:root:Status for Step : Status.passed
 INFO:root:Started step.name: Dp: I scroll down till element 'Custom budget input' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')' is visible
 INFO:root:Input params for step: 'Custom budget input', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')'
@@ -154,173 +115,111 @@ INFO:root:Clicked on xpath //span[text()='Custom budget input']/parent::div
 INFO:root:Successfully Clicked element 'Custom budget input' with xpath '//span[text()='Custom budget input']/parent::div'
 INFO:root:Completed step.name: Dp: I Click on field "Custom budget input" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')"
 INFO:root:Status for Step : Status.passed
-INFO:root:Started step.name: Dp: I scroll down till element 'Constraints' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')' is visible
-INFO:root:Input params for step: 'Constraints', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')'
-INFO:root:scrolling till element Constraints with xpath ://span[text()='Constraints']/parent::div
-INFO:root:Scrolling till element //span[text()='Constraints']/parent::div
-INFO:root:found xpath //span[text()='Constraints']/parent::div
-INFO:root:xpath Element //span[text()='Constraints']/parent::div is displayed
-INFO:root://span[text()='Constraints']/parent::div is displayed on web page
-INFO:root:Scrolling...
-INFO:root:Successfully scrolled till 'Constraints' having xpath '//span[text()='Constraints']/parent::div'
-INFO:root:Completed step.name: Dp: I scroll down till element 'Constraints' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')' is visible
+INFO:root:Started step.name: Dp: I verify if field "Step 1: Budget input options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1: Budget input options *')" is displayed
+INFO:root:Input params for step: 'Step 1: Budget input options *', 'BBO['STEP_TITLE'].replace('~','Step 1: Budget input options *')'
+INFO:root:found xpath //div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')]
+INFO:root:xpath Element //div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')] is displayed
+INFO:root:Field 'Step 1: Budget input options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')]' is displayed in UI as Expected
+INFO:root:Completed step.name: Dp: I verify if field "Step 1: Budget input options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1: Budget input options *')" is displayed
 INFO:root:Status for Step : Status.passed
-INFO:root:Started step.name: Dp: I Click on field "Constraints" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')"
-INFO:root:Input params for step: 'Constraints', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')'
-INFO:root:+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-INFO:root:found xpath //span[text()='Constraints']/parent::div
-INFO:root:xpath //span[text()='Constraints']/parent::div exists
-INFO:root:True
-INFO:root:found xpath //span[text()='Constraints']/parent::div
-INFO:root:Clicked on xpath //span[text()='Constraints']/parent::div
-INFO:root:Successfully Clicked element 'Constraints' with xpath '//span[text()='Constraints']/parent::div'
-INFO:root:Completed step.name: Dp: I Click on field "Constraints" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')"
+INFO:root:Started step.name: Dp: I verify if field "Step 1.1: Optimization options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1.1: Optimization options *')" is displayed
+INFO:root:Input params for step: 'Step 1.1: Optimization options *', 'BBO['STEP_TITLE'].replace('~','Step 1.1: Optimization options *')'
+INFO:root:found xpath //div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')]
+INFO:root:xpath Element //div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')] is displayed
+INFO:root:Field 'Step 1.1: Optimization options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')]' is displayed in UI as Expected
+INFO:root:Completed step.name: Dp: I verify if field "Step 1.1: Optimization options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1.1: Optimization options *')" is displayed
 INFO:root:Status for Step : Status.passed
-INFO:root:Started step.name: Dp: I scroll down till element 'No of months' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"Number of months")' is visible
-INFO:root:Input params for step: 'No of months', 'BBO['BBO_DRPDWNS'].replace('~',"Number of months")'
-INFO:root:scrolling till element No of months with xpath ://div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:Scrolling till element //div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:found xpath //div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:xpath Element //div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')] is displayed
-INFO:root://div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')] is displayed on web page
-INFO:root:Scrolling...
-INFO:root:Successfully scrolled till 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
-INFO:root:Completed step.name: Dp: I scroll down till element 'No of months' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"Number of months")' is visible
-INFO:root:Status for Step : Status.passed
-INFO:root:Started step.name: Dp: I select dropdown value with "3" option by scrolling in field "No of months" with xpath "BBO['BBO_DRPDWNS'].replace('~','Number of months')"
-INFO:root:Input params for step: '3', 'No of months', 'BBO['BBO_DRPDWNS'].replace('~','Number of months')'
-INFO:root:Clicking on the drop down for given 3://div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')] element
-INFO:root:found xpath //div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:found xpath //div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:found text '1' in //div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:Default value selected :'1' and option to select is '3'
-INFO:root:found xpath //div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:Clicked on xpath //div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]
-INFO:root:found xpath //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"3")]
-INFO:root:xpath Element //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"3")] is displayed
-INFO:root:3 option is visible in drop down
-INFO:root:Scrolling till element //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"3")]
-INFO:root:found xpath //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"3")]
-INFO:root:xpath Element //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"3")] is displayed
-INFO:root://div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"3")] is displayed on web page
-INFO:root:Scrolling...
-INFO:root:found xpath //div[@class="dropdownWrapper"]//div[@class="items"]/div[@class="item" and contains(text(),"3")]
-ERROR:root:Message: element click intercepted: Element is not clickable at point (581, 774)
-  (Session info: chrome=127.0.6533.89)
+INFO:root:Started step.name: Dp: I verify if field "Pristine Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')" is displayed
+INFO:root:Input params for step: 'Pristine Button', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')'
+ERROR:root:TIMEOUT: Unable to find xpath //span[text()='pristine']/parent::div
+ERROR:root:Message: no such element: Unable to locate element: {"method":"xpath","selector":"//span[text()='pristine']/parent::div"}
+  (Session info: chrome=133.0.6943.142); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception
 Stacktrace:
-0   chromedriver                        0x0000000104fb5088 cxxbridge1$str$ptr + 1887276
-1   chromedriver                        0x0000000104fad764 cxxbridge1$str$ptr + 1856264
-2   chromedriver                        0x0000000104bbc82c cxxbridge1$string$len + 88524
-3   chromedriver                        0x0000000104c06020 cxxbridge1$string$len + 389568
-4   chromedriver                        0x0000000104c0464c cxxbridge1$string$len + 382956
-5   chromedriver                        0x0000000104c02878 cxxbridge1$string$len + 375320
-6   chromedriver                        0x0000000104c01dc4 cxxbridge1$string$len + 372580
-7   chromedriver                        0x0000000104bf73a8 cxxbridge1$string$len + 329032
-8   chromedriver                        0x0000000104bf6e38 cxxbridge1$string$len + 327640
-9   chromedriver                        0x0000000104c3848c cxxbridge1$string$len + 595500
-10  chromedriver                        0x0000000104bf5474 cxxbridge1$string$len + 321044
-11  chromedriver                        0x0000000104bf60e4 cxxbridge1$string$len + 324228
-12  chromedriver                        0x0000000104f7ca6c cxxbridge1$str$ptr + 1656336
-13  chromedriver                        0x0000000104f814c8 cxxbridge1$str$ptr + 1675372
-14  chromedriver                        0x0000000104f62950 cxxbridge1$str$ptr + 1549556
-15  chromedriver                        0x0000000104f81c78 cxxbridge1$str$ptr + 1677340
-16  chromedriver                        0x0000000104f54660 cxxbridge1$str$ptr + 1491460
-17  chromedriver                        0x0000000104f9eac0 cxxbridge1$str$ptr + 1795684
-18  chromedriver                        0x0000000104f9ec3c cxxbridge1$str$ptr + 1796064
-19  chromedriver                        0x0000000104fad398 cxxbridge1$str$ptr + 1855292
-20  libsystem_pthread.dylib             0x000000019c34df94 _pthread_start + 136
-21  libsystem_pthread.dylib             0x000000019c348d34 thread_start + 8
+0   chromedriver                        0x0000000104f7c2d4 cxxbridge1$str$ptr + 2739836
+1   chromedriver                        0x0000000104f74934 cxxbridge1$str$ptr + 2708700
+2   chromedriver                        0x0000000104ad5f90 cxxbridge1$string$len + 93360
+3   chromedriver                        0x0000000104b1cde4 cxxbridge1$string$len + 383748
+4   chromedriver                        0x0000000104b5de80 cxxbridge1$string$len + 650144
+5   chromedriver                        0x0000000104b11060 cxxbridge1$string$len + 335232
+6   chromedriver                        0x0000000104f44c38 cxxbridge1$str$ptr + 2512864
+7   chromedriver                        0x0000000104f47f58 cxxbridge1$str$ptr + 2525952
+8   chromedriver                        0x0000000104f2a578 cxxbridge1$str$ptr + 2404640
+9   chromedriver                        0x0000000104f48818 cxxbridge1$str$ptr + 2528192
+10  chromedriver                        0x0000000104f1af2c cxxbridge1$str$ptr + 2341588
+11  chromedriver                        0x0000000104f64a60 cxxbridge1$str$ptr + 2643464
+12  chromedriver                        0x0000000104f64be8 cxxbridge1$str$ptr + 2643856
+13  chromedriver                        0x0000000104f745a8 cxxbridge1$str$ptr + 2707792
+14  libsystem_pthread.dylib             0x000000018ce082e4 _pthread_start + 136
+15  libsystem_pthread.dylib             0x000000018ce030fc thread_start + 8
 
-ERROR:root:3 option is not selected in the drop down list
-ERROR:root:ERRORED DESC	::Couldn't select/ find '3' option in Field 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]':
+ERROR:root:ERRORED DESC	::Field 'Pristine Button' having xpath '//span[text()='pristine']/parent::div' is not displayed. Expected to be displayed:
 
 ERROR:root:ERRORED MODULE	::<class 'AssertionError'>:
 
 ERROR:root:ERRORED FILE	::common_server_ui_steps.py:
 
-ERROR:root:ERRORED LINE	::639:
+ERROR:root:ERRORED LINE	::400:
 
-INFO:root:Completed step.name: Dp: I select dropdown value with "3" option by scrolling in field "No of months" with xpath "BBO['BBO_DRPDWNS'].replace('~','Number of months')"
+INFO:root:Completed step.name: Dp: I verify if field "Pristine Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')" is displayed
 INFO:root:Status for Step : Status.failed]]>
 </failure><system-out>
 <![CDATA[
 @scenario.begin
 
-  @brt_013 @green_base @new_brand @regression @green_inc_st_lt @prod_st @prod_st_lt @new_prod_st_lt @dp_fulltest
-  Scenario: BBO-Custom Input-Contraints-3 Months-LevelFour-LTROI 0
-    Given Dp: I open dp Server and verify "LOGIN['FORGOT_PASSWORD']" xpath is visible ... passed in 4.500s
-    And Dp: I login to dp and verify dashboard page opens ... passed in 6.023s
-    And Dp: I Hover Mouse on "Solutions" element with xpath "DASHBOARD['MODULES'].replace('~','Future Planning')" ... passed in 5.284s
-    And Dp: I Hover Mouse on "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')" ... passed in 5.299s
-    When Dp: I Click on field "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')" ... passed in 0.781s
-    Then Dp: I explicitly wait for "20" seconds for field "custom budget field" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" to appear or clickable ... passed in 2.589s
-    And Dp: I select dropdown value with "context.brand" option by scrolling in field "Brand" with xpath "BBO['BBO_DRPDWNS'].replace('~','Brand')" ... passed in 1.893s
-    And Dp: Added sleep for "2" secs ... passed in 2.006s
-    Then Dp: I explicitly wait for "20" seconds for field "custom budget field" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" to appear or clickable ... passed in 0.016s
-    And Dp: I scroll down till element 'Custom budget input' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')' is visible ... passed in 0.022s
-    And Dp: Added sleep for "2" secs ... passed in 2.005s
-    And Dp: I Click on field "Custom budget input" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" ... passed in 0.818s
-    And Dp: I scroll down till element 'Constraints' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')' is visible ... passed in 0.019s
-    And Dp: I Click on field "Constraints" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')" ... passed in 0.790s
-    And Dp: I scroll down till element 'No of months' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"Number of months")' is visible ... passed in 0.020s
-    And Dp: I select dropdown value with "3" option by scrolling in field "No of months" with xpath "BBO['BBO_DRPDWNS'].replace('~','Number of months')" ... failed in 2.933s
-    Then Dp: I verify if "No of months" field with xpath "BBO['BBO_DRPDWNS'].replace('~',"Number of months")" has " 3 " value ... skipped in 0.023s
-    And Dp: I scroll down till element 'Start month' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"Start month")' is visible ... skipped in 0.019s
-    And Dp: Added sleep for "2" secs ... skipped in 2.006s
-    And Dp: I select dropdown value with "subsequentmonth" option by scrolling in field "Start month" with xpath "BBO['BBO_DRPDWNS'].replace('~',"Start month")" ... skipped in 1.849s
-    And Dp: I enter unique scenario name "BRT_013" in field "Enter Scenario Name" with xpath "BBO['SCENARIO_NAME']" ... skipped in 0.089s
-    Then Dp: I explicitly wait for "10" seconds for field "Text boxes" with xpath "BBO['BUDGET_TEXTBOXES']" to appear or clickable ... skipped in 0.010s
-    And Dp: Added sleep for "3" secs ... skipped in 3.006s
-    Then Dp: I verify if the count of "Text boxes" fields with xpath "BBO['BUDGET_TEXTBOXES']" matches the expected count of "3" ... skipped in 0.013s
-    And Dp: I enter "Avg" budget in field "custom budget field" with xpath "BBO['BUDGET_TEXTBOXES']" ... skipped in 0.333s
-    And Dp: I scroll down till element 'LT ROI' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"LT ROI")' is visible ... skipped in 0.019s
-    And Dp: Added sleep for "3" secs ... skipped in 3.006s
-    And Dp: I select dropdown value with "0" option by scrolling in field "LT ROI" with xpath "BBO['BBO_DRPDWNS'].replace('~',"LT ROI")" ... skipped in 0.052s
-    And Dp: Added sleep for "3" secs ... skipped in 3.006s
-    Then Dp: I explicitly wait for "10" seconds for field "Constraints Table" with xpath "SELECTIVE_CONFIG['TABLE']" to appear or clickable ... skipped in 0.022s
-    And Dp: I store the data of "cbconstraints" table in context variable till level "LevelFour" ... skipped in 123.975s
-    And Dp: I choose the "7" random rows and removed the remaining rows in table "cbconstraints" with "LevelFour" ... skipped in 1.985s
-    And Dp: I update the constraints table "LevelFour" with "combination" in "custombudgetinput" ... skipped in 0.000s
-    And Dp: Added sleep for "2" secs ... skipped in 0.000s
-    Then Dp: I encountered a warning message in the table below and updated the budget accordingly ... skipped in 0.000s
-    Then Dp: I explicitly wait for "10" seconds for field "Optimize" with xpath "BBO['OPTIMIZE_BUTTON']" to appear or clickable ... skipped in 0.000s
-    And Dp: I scroll down till element 'Optimize' having xpath 'BBO['OPTIMIZE_BUTTON']' is visible ... skipped in 0.000s
-    And Dp: Added sleep for "3" secs ... skipped in 0.000s
-    And Dp: I Click on field "Optimize" element with xpath "BBO['OPTIMIZE_BUTTON']" ... skipped in 0.000s
-    And Dp: I click on the "Ok" button with xpath "WARNINGS['OVERRID_WARN_BUTT'].replace('~','Ok')" in the warning modal with xpath "WARNINGS['OVERRIDING_BUDGET']" ... skipped in 0.000s
-    Then Dp: I explicitly wait for "10" seconds for field "View status" with xpath "BBO['VIEW_STATUS']" to appear or clickable ... skipped in 0.000s
-    And Dp: I Click on field "View status" element with xpath "BBO['VIEW_STATUS']" ... skipped in 0.000s
-    And Dp: Added sleep for "3" secs ... skipped in 0.000s
-    Then Dp: I store the plan name with xpath "HISTORY['RECENT_PLAN_NAME']" by "Text" ... skipped in 0.000s
+  @TC_070 @regression @dp_fulltest
+  Scenario: TC_070 - I click on "Custom budget input" and verify that the custom budget input fields are displayed correctly
+    Given Dp: I open dp Server and verify "LOGIN['FORGOT_PASSWORD']" xpath is visible ... passed in 7.863s
+    And Dp: I login to dp and verify dashboard page opens ... passed in 6.970s
+    And Dp: I Hover Mouse on "Solutions" element with xpath "DASHBOARD['MODULES'].replace('~','Future Planning')" ... passed in 0.284s
+    And Dp: I Hover Mouse on "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')" ... passed in 0.306s
+    When Dp: I Click on field "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')" ... passed in 0.787s
+    Then Dp: I explicitly wait for "30" seconds for field "BBO Header text" with xpath "BBO['BBO_TEXT'].replace('~','Budget Based Optimization')" to appear or clickable ... passed in 4.626s
+    And Dp: I scroll down till element 'Custom budget input' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')' is visible ... passed in 0.026s
+    And Dp: Added sleep for "2" secs ... passed in 2.001s
+    And Dp: I Click on field "Custom budget input" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" ... passed in 0.803s
+    Then Dp: I verify if field "Step 1: Budget input options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1: Budget input options *')" is displayed ... passed in 0.015s
+    Then Dp: I verify if field "Step 1.1: Optimization options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1.1: Optimization options *')" is displayed ... passed in 0.023s
+    And Dp: I verify if field "Pristine Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')" is displayed ... failed in 10.309s
+    And Dp: I verify if field "Constraints Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Constraints')" is displayed ... skipped in 0.000s
+    And Dp: I verify if field "Selective pristine Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Selective pristine')" is displayed ... skipped in 0.000s
+    Then Dp: I verify if field "Step 2 - Enter custom budget data to optimize *" with xpath "BBO['STEP_TITLE'].replace('~','Step 2 - Enter custom budget data to optimize *')" is displayed ... skipped in 0.000s
+    And Dp: I verify if field "Number of months dropdown" with xpath "BBO['BBO_DRPDWNS'].replace('~','Number of months')" is displayed ... skipped in 0.000s
+    And Dp: I verify if field "Start month dropdown" with xpath "BBO['BBO_DRPDWNS'].replace('~','Start month')" is displayed ... skipped in 0.000s
+    And Dp: I verify if field "Enter scenario name input field" with xpath "BBO['SCENARIO_NAME']" is displayed ... skipped in 0.000s
+    Then Dp: I verify if field "Define monthly budget" with xpath "BBO['STEP_TITLE'].replace('~','Define monthly budget')" is displayed ... skipped in 0.000s
+    Then Dp: I verify if field "Step 3: Define LT % *" with xpath "BBO['STEP_TITLE'].replace('~','Step 3: Define LT % *')" is displayed ... skipped in 0.000s
+    Then Dp: I verify if field "Step 4: Define CPM" with xpath "CPM_CONFIG['CPM_CARD']" is displayed ... skipped in 0.000s
+    Then Dp: I verify if field "Optimize Button" with xpath "BBO['OPTIMIZE_BUTTON']" is displayed ... skipped in 0.000s
+    And Dp: I scroll down till element 'Profile' having xpath 'DASHBOARD['MODULES'].replace('~','Profile')' is visible ... skipped in 0.000s
+    And Dp: I Hover Mouse on "Profile" element with xpath "DASHBOARD['MODULES'].replace('~','Profile')" ... skipped in 0.000s
+    And Dp: I Click on field "Logout" element with xpath "DASHBOARD['MODULES'].replace('~','Logout')" ... skipped in 0.000s
+    And Dp: I explicitly wait for "30" seconds for field "Hey,hello text" with xpath "LOGIN['WELCOME_MESSAGE']" to appear or clickable ... skipped in 0.000s
+    Then Dp: I verify if field "Hey,hello text" with xpath "LOGIN['WELCOME_MESSAGE']" is displayed ... skipped in 0.000s
 
 @scenario.end
 --------------------------------------------------------------------------------
 
 Captured stdout:
-Dp Server UI opened successfully with URL 'https://green.datapoem.ai/gupt-login'
-Successfully logged into CMS Server UI with username 'OptimisationTesting@datapoem.com', password 'OptimisationTesting@datapoem.com'
+Dp Server UI opened successfully with URL 'https://qa.datapoem.ai/gupt-login'
+Successfully logged into DP Server UI with username 'OptimisationTesting@datapoem.com', password 'OptimisationTesting@datapoem.com'
 Successfully Hovered mouse on element 'Solutions' with xpath '//span[normalize-space()='Future Planning']'
 Successfully Hovered mouse on element 'Optimization' with xpath '//span[normalize-space()='Optimization']'
 Successfully Clicked element 'Optimization' with xpath '//span[normalize-space()='Optimization']'
-Field 'custom budget field' having xpath '//span[text()='Custom budget input']/parent::div' is found within '20' seconds
-Successfully selected 'Dove Female BW' option in Field 'Brand' having xpath '//div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
-Successfully added sleep for 2 seconds 
-Field 'custom budget field' having xpath '//span[text()='Custom budget input']/parent::div' is found within '20' seconds
+Field 'BBO Header text' having xpath '//span[contains(text(),'Budget Based Optimization')]' is found within '30' seconds
 Successfully scrolled till 'Custom budget input' having xpath '//span[text()='Custom budget input']/parent::div'
 Successfully added sleep for 2 seconds 
 Successfully Clicked element 'Custom budget input' with xpath '//span[text()='Custom budget input']/parent::div'
-Successfully scrolled till 'Constraints' having xpath '//span[text()='Constraints']/parent::div'
-Successfully Clicked element 'Constraints' with xpath '//span[text()='Constraints']/parent::div'
-Successfully scrolled till 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Field 'Step 1: Budget input options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')]' is displayed in UI  as Expected
+Field 'Step 1.1: Optimization options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')]' is displayed in UI  as Expected
 
 ]]>
 </system-out><system-err>
 <![CDATA[
 Captured stderr:
-ERRORED DESC	::Couldn't select/ find '3' option in Field 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]':
+ERRORED DESC	::Field 'Pristine Button' having xpath '//span[text()='pristine']/parent::div' is not displayed. Expected to be displayed:
 ERRORED MODULE	::<class 'AssertionError'>:
 ERRORED FILE	::common_server_ui_steps.py:
-ERRORED LINE	::639:
+ERRORED LINE	::400:
 
 ]]>
 </system-err></testcase></testsuite>
