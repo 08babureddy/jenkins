@@ -109,17 +109,19 @@ pipeline {
                 <body style='font-family: Arial, sans-serif;'>
                     <h2>Test Execution Report</h2>
                     <div style="display: flex; align-items: center; margin-bottom: 20px;">
-                            <h3 style="margin-right: 10px;">Summary:</h3>
-                            <div style="width: 200px; height: 20px; border: 1px solid #000; display: flex;">
-                                <div style="width: ${passPercentage}%; background-color: green; height: 100%;"></div>
-                                <div style="width: ${failPercentage}%; background-color: red; height: 100%;"></div>
+                        <div style="margin-bottom: 20px; width: 250px;">
+                            <h3>Test Execution Summary</h3>
+                            <div style="position: relative; width: 100%; background-color: #f0f0f0; border-radius: 5px; overflow: hidden;">
+                                <!-- Green Pass Percentage -->
+                                <div style="width: ${passPercentage}%; background-color: green; height: 30px;"></div>
+                                <!-- Red Fail Percentage -->
+                                <div style="width: ${failPercentage}%; background-color: red; height: 30px; position: absolute; left: ${passPercentage}%;"></div>
+                                <!-- Centered Percentage Text -->
+                                <div style="position: absolute; width: 100%; top: 50%; transform: translateY(-50%); text-align: center; font-weight: bold; color: white;">
+                                    Passed: ${passPercentage}% | Failed: ${failPercentage}%
+                                </div>
                             </div>
                         </div>
-                        <ul>
-                            <li>Total Tests: ${totalTests}</li>
-                            <li>Passed: ${passedTests} (${passPercentage}%)</li>
-                            <li>Failed: ${failedTests.size()} (${failPercentage}%)</li>
-                        </ul>
 
                     <h3>Failed Test Cases:</h3>
                     <table style='border-collapse: collapse; width: 100%;'>
