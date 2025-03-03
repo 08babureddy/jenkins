@@ -31,7 +31,7 @@ pipeline {
                 def build_number = currentBuild.number
                 def buildStatus = currentBuild.result ?: 'UNKNOWN' // Handling null or empty status
 
-                def current_run_folder = env.TEST_REPORT_PATH ?: "2024-08-01-11-49-20"
+                def current_run_folder = sh(script: "echo \$TEST_REPORT_PATH", returnStdout: true).trim()
                 def results_folder_path = "${WORKSPACE}/results"
                 def html_folder_path = "${results_folder_path}/html/${current_run_folder}"
                 def xml_folder_path = "${results_folder_path}/xml/${current_run_folder}"
