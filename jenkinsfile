@@ -58,42 +58,43 @@ pipeline {
             def totalTests = 0
             def passedTests = 0
 
-            // Get list of XML files
-            def xmlFiles = sh(script: "ls ${xml_folder_path}/*.xml", returnStdout: true).trim().split('\n')
-            
-            xmlFiles.each { xmlFile ->
-                // Extract test data using grep and sed
-                def testData = sh(script: """
-                    # Get total tests from testsuite attributes
-                    total=\$(grep -o 'tests="[0-9]*"' "${xmlFile}" | sed 's/tests="\\([0-9]*\\)"/\\1/')
-                    totalTests=\$((totalTests + total))
+            // Get list of XML files and process with shell commands
+            sh(script: """
+                for xmlfile in ${xml_folder_path}/*.xml; do
+                    # Count total tests
+                    tests=\$(grep -o 'tests="[0-9]*"' "\$xmlfile" | cut -d'"' -f2)
+                    echo "\$tests" >> /tmp/total.txt
                     
                     # Extract failed test cases
-                    grep -B1 '<failure' "${xmlFile}" | grep 'testcase' | while read -r line; do
-                        className=\$(echo "\$line" | sed -n 's/.*classname="\\([^"]*\\).*/\\1/p')
-                        testName=\$(echo "\$line" | sed -n 's/.*name="\\([^"]*\\).*/\\1/p')
-                        echo "\${className}|\${testName}"
+                    grep -B1 '<failure' "\$xmlfile" | grep 'testcase' | while read -r line; do
+                        class=\$(echo "\$line" | sed -n 's/.*classname="\\([^"]*\\).*/\\1/p')
+                        name=\$(echo "\$line" | sed -n 's/.*name="\\([^"]*\\).*/\\1/p')
+                        echo "\$class|\$name" >> /tmp/failed.txt
                     done
-                """, returnStdout: true).trim()
+                done
+            """, returnStatus: true)
 
-                // Process test data
-                testData.split('\n').each { line ->
-                    if (line.contains('|')) {
-                        def (suiteName, testName) = line.split('\\|')
-                        failedTests << [suite: suiteName, test: testName]
+            // Read results
+            totalTests = sh(script: "cat /tmp/total.txt | awk '{sum+=\$1} END {print sum}'", returnStdout: true).trim() as Integer
+            def failedContent = sh(script: "cat /tmp/failed.txt || true", returnStdout: true).trim()
+
+            if (failedContent) {
+                failedContent.split('\n').each { line ->
+                    def parts = line.split('\\|')
+                    if (parts.size() == 2) {
+                        failedTests << [suite: parts[0], test: parts[1]]
                     }
                 }
             }
 
-            // Count total and passed tests
-            totalTests = sh(script: """
-                find ${xml_folder_path} -name '*.xml' -exec grep -o 'tests="[0-9]*"' {} \\; | sed 's/tests="\\([0-9]*\\)"/\\1/' | awk '{sum += \$1} END {print sum}'
-            """, returnStdout: true).trim() as Integer
-
             passedTests = totalTests - failedTests.size()
 
+            // Calculate percentages with integer division
+            def passPercentage = totalTests > 0 ? ((passedTests * 100) / totalTests) : 0
+            def failPercentage = totalTests > 0 ? ((failedTests.size() * 100) / totalTests) : 0
+
             // Create table rows
-            def tableRows = failedTests.isEmpty() ? 
+            def tableRows = failedTests.isEmpty() ?
                 "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>" :
                 failedTests.collect { test ->
                     """<tr>
@@ -101,10 +102,6 @@ pipeline {
                         <td style='padding:8px;border:1px solid #ddd'>${test.test}</td>
                     </tr>"""
                 }.join("\n")
-
-            // Calculate percentages
-            def passPercentage = (passedTests / totalTests * 100).round(2)
-            def failPercentage = (failedTests.size() / totalTests * 100).round(2)
 
             // Create email body
             def emailBody = """
@@ -119,7 +116,7 @@ pipeline {
                             <li>Failed: ${failedTests.size()} (${failPercentage}%)</li>
                         </ul>
                     </div>
-                    
+
                     <h3>Failed Test Cases:</h3>
                     <table style='border-collapse: collapse; width: 100%;'>
                         <tr style='background-color: #f2f2f2;'>
@@ -128,7 +125,7 @@ pipeline {
                         </tr>
                         ${tableRows}
                     </table>
-                    
+
                     <p>Click <a href="file://${html_folder_path}/${latest_html_file_name}">here</a> to view the detailed HTML report.</p>
                 </body>
                 </html>
@@ -142,6 +139,9 @@ pipeline {
                 mimeType: 'text/html',
                 attachmentsPattern: "results/html/${env.CURRENT_RUN_FOLDER}/*.html"
             )
+
+            // Cleanup temp files
+            sh 'rm -f /tmp/total.txt /tmp/failed.txt'
         }
     }
 }
