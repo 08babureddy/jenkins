@@ -1,5 +1,3 @@
-import groovy.xml.XmlSlurper
-
 pipeline {
     agent any
     environment {
@@ -44,6 +42,7 @@ pipeline {
     post {
         always {
             script {
+                import groovy.util.XmlSlurper
                 def pipeline_name = env.JOB_NAME
                 def build_number = currentBuild.number
                 def buildStatus = currentBuild.result ?: 'UNKNOWN'
@@ -56,7 +55,7 @@ pipeline {
                 def html_file_path = sh(script: "ls -t ${html_folder_path}/*.html | head -n 1", returnStdout: true).trim()
                 def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
 
-                def sendEmailWithFailedTests = { xml_folder_path ->
+                def sendEmailWithFailedTests = {
                     def failedTests = []
                     
                     def xmlFiles = new File(xml_folder_path).listFiles().findAll { it.name.endsWith('.xml') }
@@ -103,7 +102,7 @@ pipeline {
                     )
 }
                 // Call the function to send the email
-                sendEmailWithFailedTests(xml_folder_path)
+                sendEmailWithFailedTests()
             }
         }
     }
