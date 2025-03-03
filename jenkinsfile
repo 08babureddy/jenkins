@@ -138,7 +138,7 @@ pipeline {
             emailext(
                 subject: "${pipeline_name} - Build #${build_number} - ${buildStatus} (Pass: ${passPercentage}%)",
                 body: emailBody,
-                to: 'chinnareddy.b@datapoem.com,radhika.j@datapoem.com,rohit.c@datapoem.com'
+                to: 'chinnareddy.b@datapoem.com,radhika.j@datapoem.com,rohit.c@datapoem.com',
                 mimeType: 'text/html',
                 attachmentsPattern: "results/html/${env.CURRENT_RUN_FOLDER}/*.html"
             )
