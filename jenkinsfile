@@ -1,4 +1,5 @@
 import groovy.xml.XmlSlurper
+
 pipeline {
     agent any
     environment {
@@ -35,88 +36,76 @@ pipeline {
 
                     // Set environment variable
                     env.CURRENT_RUN_FOLDER = current_run_folder
-                    
                     echo "Current Run Folder: ${env.CURRENT_RUN_FOLDER}"
                 }
-                
             }
         }
     }
     post {
         always {
             script {
-                // Defining variables for the email content inside the script block
                 def pipeline_name = env.JOB_NAME
                 def build_number = currentBuild.number
-                def buildStatus = currentBuild.result ?: 'UNKNOWN' // Handling null or empty status
+                def buildStatus = currentBuild.result ?: 'UNKNOWN'
 
-                // def current_run_folder = sh(script: "echo \$TEST_REPORT_PATH", returnStdout: true).trim()
                 def results_folder_path = "${WORKSPACE}/results"
-                def html_folder_path = "${results_folder_path}/html/${env.current_run_folder}"
-                def xml_folder_path = "${results_folder_path}/xml/${env.current_run_folder}"
-                echo "${html_folder_path}"
-                
+                def html_folder_path = "${results_folder_path}/html/${env.CURRENT_RUN_FOLDER}"
+                def xml_folder_path = "${results_folder_path}/xml/${env.CURRENT_RUN_FOLDER}"
+                echo "HTML Report Path: ${html_folder_path}"
 
                 def html_file_path = sh(script: "ls -t ${html_folder_path}/*.html | head -n 1", returnStdout: true).trim()
-
                 def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
 
-                def sendEmailWithFailedTests(String xml_folder_path) {
-                            def failedTests = []
+                def sendEmailWithFailedTests = { xml_folder_path ->
+                    def failedTests = []
+                    
+                    def xmlFiles = new File(xml_folder_path).listFiles().findAll { it.name.endsWith('.xml') }
+                    
+                    xmlFiles.each { file ->
+                        def xml = new XmlSlurper().parse(file)
+                        def suiteName = xml.@name.text()
                         
-                            // Read all XML files from the given folder
-                            def xmlFiles = new File(xml_folder_path).listFiles().findAll { it.name.endsWith('.xml') }
-                        
-                            xmlFiles.each { file ->
-                                def xml = new XmlSlurper().parse(file)
-                                def suiteName = xml.@name.text()  // Extract test suite name
-                                
-                                xml.testcase.each { testcase ->
-                                    if (testcase.failure || testcase.error) { // If test case failed
-                                        def testCaseName = testcase.@name.text()
-                                        failedTests << [suiteName, testCaseName]
-                                    }
-                                }
+                        xml.testcase.each { testcase ->
+                            if (testcase.failure || testcase.error) {
+                                def testCaseName = testcase.@name.text()
+                                failedTests << [suiteName, testCaseName]
                             }
-                        
+                        }
+                    }
 
-                            // Prepare HTML table for failed tests
-                            
-                            if (failedTests.isEmpty()) {
-                                    tableRows = "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>"
-                            } else {
-                                    tableRows = failedTests.collect { "<tr><td>${it[0]}</td><td>${it[1]}</td></tr>" }.join("\n")
-                            }
-                        
-                            def emailBody = """
-                                <html>
-                                <body>
-                                    <h2>Test Execution Report</h2>
-                                    <h3>Failed Test Cases</h3>
-                                    <table border="1" cellspacing="0" cellpadding="5">
-                                        <tr>
-                                            <th>Test Suite</th>
-                                            <th>Test Case</th>
-                                        </tr>
-                                        ${tableRows}
-                                    </table>
-                                </body>
-                                </html>
-                            """
+                    def tableRows = failedTests.isEmpty() ? 
+                        "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>" :
+                        failedTests.collect { "<tr><td>${it[0]}</td><td>${it[1]}</td></tr>" }.join("\n")
 
-                // Sending the email with the build status
-                emailext(
-                    subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
-                    body: """
-                        <h3 style="color: green;">Test Results for Build ${build_number}</h3>
-                        <p>Status: ${buildStatus}</p>
-                        emailBody
-                        <p>Click <a href="file://${html_folder_path}/${latest_html_file_name}">here</a> to view the HTML report.</p>
-                    """,
-                    to: 'chinnareddy.b@datapoem.com',
-                    mimeType: 'text/html',
-                    attachmentsPattern: "results/html/${env.current_run_folder}/*.html"
-                )
+                    def emailBody = """
+                        <html>
+                        <body>
+                            <h2>Test Execution Report</h2>
+                            <h3>Failed Test Cases</h3>
+                            <table border="1" cellspacing="0" cellpadding="5">
+                                <tr><th>Test Suite</th><th>Test Case</th></tr>
+                                ${tableRows}
+                            </table>
+                        </body>
+                        </html>
+                    """
+
+                    emailext(
+                        subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
+                        body: """
+                            <h3 style="color: green;">Test Results for Build ${build_number}</h3>
+                            <p>Status: ${buildStatus}</p>
+                            ${emailBody}
+                            <p>Click <a href="file://${html_folder_path}/${latest_html_file_name}">here</a> to view the HTML report.</p>
+                        """,
+                        to: 'chinnareddy.b@datapoem.com',
+                        mimeType: 'text/html',
+                        attachmentsPattern: "results/html/${env.CURRENT_RUN_FOLDER}/*.html"
+                    )
+                }
+
+                // Call the function to send the email
+                sendEmailWithFailedTests(xml_folder_path)
             }
         }
     }
