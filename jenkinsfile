@@ -20,6 +20,7 @@ pipeline {
                     source venv/bin/activate && python -m behave --tags ${tagname}
                     '''
                     env.current_run_folder = sh(script: "echo \$TEST_REPORT_PATH", returnStdout: true).trim()
+                    sh ''' echo $env.current_run_folder '''
                 }
                 
             }
