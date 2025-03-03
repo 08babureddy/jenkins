@@ -35,6 +35,7 @@ pipeline {
                 def results_folder_path = "${WORKSPACE}/results"
                 def html_folder_path = "${results_folder_path}/html/${current_run_folder}"
                 def xml_folder_path = "${results_folder_path}/xml/${current_run_folder}"
+                echo "${html_folder_path}"
                 
 
                 def html_file_path = sh(script: "ls -t ${html_folder_path}/*.html | head -n 1", returnStdout: true).trim()
@@ -53,7 +54,7 @@ pipeline {
                     """,
                     to: 'chinnareddy.b@datapoem.com',
                     mimeType: 'text/html',
-                    attachmentsPattern: "${html_file_path}/*.html"
+                    attachmentsPattern: "${html_folder_path}/*.html"
                 )
             }
         }
