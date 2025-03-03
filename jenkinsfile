@@ -19,7 +19,9 @@ pipeline {
                     sh '''
                     source venv/bin/activate && python -m behave --tags ${tagname}
                     '''
+                    env.current_run_folder = sh(script: "echo \$TEST_REPORT_PATH", returnStdout: true).trim()
                 }
+                
             }
         }
     }
@@ -31,10 +33,10 @@ pipeline {
                 def build_number = currentBuild.number
                 def buildStatus = currentBuild.result ?: 'UNKNOWN' // Handling null or empty status
 
-                def current_run_folder = sh(script: "echo \$TEST_REPORT_PATH", returnStdout: true).trim()
+                // def current_run_folder = sh(script: "echo \$TEST_REPORT_PATH", returnStdout: true).trim()
                 def results_folder_path = "${WORKSPACE}/results"
-                def html_folder_path = "${results_folder_path}/html/${current_run_folder}"
-                def xml_folder_path = "${results_folder_path}/xml/${current_run_folder}"
+                def html_folder_path = "${results_folder_path}/html/${env.current_run_folder}"
+                def xml_folder_path = "${results_folder_path}/xml/${env.current_run_folder}"
                 echo "${html_folder_path}"
                 
 
@@ -54,7 +56,7 @@ pipeline {
                     """,
                     to: 'chinnareddy.b@datapoem.com',
                     mimeType: 'text/html',
-                    attachmentsPattern: "results/html/${current_run_folder}/*.html"
+                    attachmentsPattern: "results/html/${env.current_run_folder}/*.html"
                 )
             }
         }
