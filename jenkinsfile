@@ -81,7 +81,7 @@ pipeline {
                         
 
                             // Prepare HTML table for failed tests
-                            def tableRows
+                            
                             if (failedTests.isEmpty()) {
                                     tableRows = "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>"
                             } else {
@@ -120,5 +120,4 @@ pipeline {
             }
         }
     }
-}
 }
