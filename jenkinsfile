@@ -101,8 +101,7 @@ pipeline {
                         mimeType: 'text/html',
                         attachmentsPattern: "results/html/${env.CURRENT_RUN_FOLDER}/*.html"
                     )
-                }
-
+}
                 // Call the function to send the email
                 sendEmailWithFailedTests(xml_folder_path)
             }
