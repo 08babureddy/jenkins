@@ -55,40 +55,85 @@ pipeline {
                 def html_file_path = sh(script: "ls -t ${html_folder_path}/*.html | head -n 1", returnStdout: true).trim()
                 def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
 
-                def sendEmailWithFailedTests = {
-                    def failedTests = []
+                def totalTests = 0
+                def failedTests = []
+            
+                // Get test statistics using grep
+                sh(script: """
+                for file in ${xml_folder_path}/*.xml; do
+                    echo "Processing: \$file"
+                    # Count total test cases
+                    total=\$(grep -c '<testcase ' "\$file" || true)
+                    totalTests=\$((totalTests + total))
                     
-                    def xmlFiles = new File(xml_folder_path).listFiles().findAll { it.name.endsWith('.xml') }
-                    
-                    xmlFiles.each { file ->
-                        def xml = new groovy.util.XmlSlurper().parse(file)
-                        def suiteName = xml.@name.text()
-                        
-                        xml.testcase.each { testcase ->
-                            if (testcase.failure || testcase.error) {
-                                def testCaseName = testcase.@name.text()
-                                failedTests << [suiteName, testCaseName]
-                            }
-                        }
-                    }
-                    def tableRows = failedTests.isEmpty() ? 
-                        "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>" :
-                        failedTests.collect { "<tr><td>${it[0]}</td><td>${it[1]}</td></tr>" }.join("\n")
+                    # Get failed tests
+                    grep -B1 '<failure' "\$file" | grep '<testcase' | while read -r line; do
+                        className=\$(echo "\$line" | sed -n 's/.*classname="\\([^"]*\\).*/\\1/p')
+                        testName=\$(echo "\$line" | sed -n 's/.*name="\\([^"]*\\).*/\\1/p')
+                        echo "\$className|\$testName" >> /tmp/failed_tests.txt
+                    done
+                done
+            """, returnStatus: true)
 
-                    def emailBody = """
-                        <html>
-                        <body>
-                            <h2>Test Execution Report</h2>
-                            <h3>Failed Test Cases</h3>
-                            <table border="1" cellspacing="0" cellpadding="5">
-                                <tr><th>Test Suite</th><th>Test Case</th></tr>
-                                ${tableRows}
-                            </table>
-                        </body>
-                        </html>
+            // Read failed tests
+            def failedTestsContent = sh(script: """
+                if [ -f /tmp/failed_tests.txt ]; then
+                    cat /tmp/failed_tests.txt
+                    rm /tmp/failed_tests.txt
+                fi
+            """, returnStdout: true).trim()
+
+            // Create table rows for failed tests
+            def tableRows = ""
+            if (failedTestsContent) {
+                failedTestsContent.split('\n').each { line ->
+                    def (className, testName) = line.split('\\|')
+                    tableRows += """
+                        <tr>
+                            <td style="padding: 8px; border: 1px solid #ddd;">${className}</td>
+                            <td style="padding: 8px; border: 1px solid #ddd;">${testName}</td>
+                        </tr>
                     """
+                }
+            }
 
-                    emailext(
+            // Calculate total failed tests
+            def failedCount = failedTestsContent ? failedTestsContent.split('\n').size() : 0
+            def passedCount = totalTests - failedCount
+            
+            // Calculate percentages
+            def passPercentage = totalTests > 0 ? ((passedCount / totalTests) * 100).round(2) : 0
+            def failPercentage = totalTests > 0 ? ((failedCount / totalTests) * 100).round(2) : 0
+
+            // Create email body with summary and failed tests table
+            def emailBody = """
+                <html>
+                <body style="font-family: Arial, sans-serif;">
+                    <h2 style="color: #333;">Test Execution Summary</h2>
+                    <div style="margin-bottom: 20px;">
+                        <p><strong>Total Tests:</strong> ${totalTests}</p>
+                        <p><strong>Passed:</strong> ${passedCount} (${passPercentage}%)</p>
+                        <p><strong>Failed:</strong> ${failedCount} (${failPercentage}%)</p>
+                    </div>
+                    
+                    <h3 style="color: #333;">Failed Test Cases</h3>
+                    <table style="border-collapse: collapse; width: 100%; margin-top: 10px;">
+                        <tr style="background-color: #f2f2f2;">
+                            <th style="padding: 12px; border: 1px solid #ddd;">Test Suite</th>
+                            <th style="padding: 12px; border: 1px solid #ddd;">Test Case</th>
+                        </tr>
+                        ${tableRows ?: '<tr><td colspan="2" style="text-align:center; padding: 8px;">No Failed Test Cases</td></tr>'}
+                    </table>
+                    
+                    <p style="margin-top: 20px;">
+                        <a href="file://${html_folder_path}/${latest_html_file_name}" style="color: #0066cc;">View Full HTML Report</a>
+                    </p>
+                </body>
+                </html>
+            """
+                
+
+                emailext(
                         subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
                         body: """
                             <h3 style="color: green;">Test Results for Build ${build_number}</h3>
@@ -100,9 +145,6 @@ pipeline {
                         mimeType: 'text/html',
                         attachmentsPattern: "results/html/${env.CURRENT_RUN_FOLDER}/*.html"
                     )
-}
-                // Call the function to send the email
-                sendEmailWithFailedTests()
             }
         }
     }
