@@ -40,21 +40,20 @@ pipeline {
         }
     }
     post {
-        always {
-            script {
-                def pipeline_name = env.JOB_NAME
-                def build_number = currentBuild.number
-                def buildStatus = currentBuild.result ?: 'UNKNOWN'
+    always {
+        script {
+            def pipeline_name = env.JOB_NAME
+            def build_number = currentBuild.number
+            def buildStatus = currentBuild.result ?: 'UNKNOWN'
 
-                def results_folder_path = "${WORKSPACE}/results"
-                def html_folder_path = "${results_folder_path}/html/${env.CURRENT_RUN_FOLDER}"
-                def xml_folder_path = "${results_folder_path}/xml/${env.CURRENT_RUN_FOLDER}"
-                echo "HTML Report Path: ${html_folder_path}"
+            def results_folder_path = "${WORKSPACE}/results"
+            def html_folder_path = "${results_folder_path}/html/${env.CURRENT_RUN_FOLDER}"
+            def xml_folder_path = "${results_folder_path}/xml/${env.CURRENT_RUN_FOLDER}"
 
-                def html_file_path = sh(script: "ls -t ${html_folder_path}/*.html | head -n 1", returnStdout: true).trim()
-                def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
+            def html_file_path = sh(script: "ls -t ${html_folder_path}/*.html | head -n 1", returnStdout: true).trim()
+            def latest_html_file_name = sh(script: "basename \"${html_file_path}\"", returnStdout: true).trim()
 
-                // Parse XML files using readFile and XmlParser
+            // Process XML files using shell commands
             def failedTests = []
             def totalTests = 0
             def passedTests = 0
@@ -63,24 +62,37 @@ pipeline {
             def xmlFiles = sh(script: "ls ${xml_folder_path}/*.xml", returnStdout: true).trim().split('\n')
             
             xmlFiles.each { xmlFile ->
-                def xmlContent = readFile(xmlFile)
-                def parser = new XmlParser()
-                def testsuite = parser.parseText(xmlContent)
-                
-                testsuite.testcase.each { testcase ->
-                    totalTests++
-                    def suiteName = testcase.@classname.toString()
-                    def testName = testcase.@name.toString()
+                // Extract test data using grep and sed
+                def testData = sh(script: """
+                    # Get total tests from testsuite attributes
+                    total=\$(grep -o 'tests="[0-9]*"' "${xmlFile}" | sed 's/tests="\\([0-9]*\\)"/\\1/')
+                    totalTests=\$((totalTests + total))
                     
-                    if (testcase.failure) {
+                    # Extract failed test cases
+                    grep -B1 '<failure' "${xmlFile}" | grep 'testcase' | while read -r line; do
+                        className=\$(echo "\$line" | sed -n 's/.*classname="\\([^"]*\\).*/\\1/p')
+                        testName=\$(echo "\$line" | sed -n 's/.*name="\\([^"]*\\).*/\\1/p')
+                        echo "\${className}|\${testName}"
+                    done
+                """, returnStdout: true).trim()
+
+                // Process test data
+                testData.split('\n').each { line ->
+                    if (line.contains('|')) {
+                        def (suiteName, testName) = line.split('\\|')
                         failedTests << [suite: suiteName, test: testName]
-                    } else {
-                        passedTests++
                     }
                 }
             }
 
-            // Create table rows for test results
+            // Count total and passed tests
+            totalTests = sh(script: """
+                find ${xml_folder_path} -name '*.xml' -exec grep -o 'tests="[0-9]*"' {} \\; | sed 's/tests="\\([0-9]*\\)"/\\1/' | awk '{sum += \$1} END {print sum}'
+            """, returnStdout: true).trim() as Integer
+
+            passedTests = totalTests - failedTests.size()
+
+            // Create table rows
             def tableRows = failedTests.isEmpty() ? 
                 "<tr><td colspan='2' style='text-align:center;'>No Failed Test Cases</td></tr>" :
                 failedTests.collect { test ->
@@ -92,7 +104,7 @@ pipeline {
 
             // Calculate percentages
             def passPercentage = (passedTests / totalTests * 100).round(2)
-            def failPercentage = ((totalTests - passedTests) / totalTests * 100).round(2)
+            def failPercentage = (failedTests.size() / totalTests * 100).round(2)
 
             // Create email body
             def emailBody = """
@@ -104,7 +116,7 @@ pipeline {
                         <ul>
                             <li>Total Tests: ${totalTests}</li>
                             <li>Passed: ${passedTests} (${passPercentage}%)</li>
-                            <li>Failed: ${totalTests - passedTests} (${failPercentage}%)</li>
+                            <li>Failed: ${failedTests.size()} (${failPercentage}%)</li>
                         </ul>
                     </div>
                     
@@ -121,21 +133,16 @@ pipeline {
                 </body>
                 </html>
             """
-                
 
-                emailext(
-                        subject: "${pipeline_name} - Build #${build_number} - ${buildStatus}",
-                        body: """
-                            <h3 style="color: green;">Test Results for Build ${build_number}</h3>
-                            <p>Status: ${buildStatus}</p>
-                            ${emailBody}
-                            <p>Click <a href="file://${html_folder_path}/${latest_html_file_name}">here</a> to view the HTML report.</p>
-                        """,
-                        to: 'chinnareddy.b@datapoem.com',
-                        mimeType: 'text/html',
-                        attachmentsPattern: "results/html/${env.CURRENT_RUN_FOLDER}/*.html"
-                    )
-            }
+            // Send email
+            emailext(
+                subject: "${pipeline_name} - Build #${build_number} - ${buildStatus} (Pass: ${passPercentage}%)",
+                body: emailBody,
+                to: 'chinnareddy.b@datapoem.com',
+                mimeType: 'text/html',
+                attachmentsPattern: "results/html/${env.CURRENT_RUN_FOLDER}/*.html"
+            )
         }
     }
+}
 }
