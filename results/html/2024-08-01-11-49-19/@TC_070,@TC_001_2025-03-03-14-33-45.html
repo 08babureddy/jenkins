@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>DataPoem Report</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script >
+// Load google charts
+google.charts.load('current', {'packages':['corechart']});
+google.charts.setOnLoadCallback(drawChart);
+// Draw the chart and set the chart values
+function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+  ['Status', 'in number'],
+  ['Passed', 1],
+  ['Failed', 1],
+  ['AutomationScriptIssue', 0],
+  ['NotTested', 0],
+]);
+  // Optional; add a title and set the width and height of the chart//
+  var options = {'title':'Test Execution Chart : 2' , 'width':550, 'height':401,'colors':['#70BDB1','#FF5733','#FFC300','#FFC000'], 'fontSize':20};
+  // Display the chart inside the <div> element with id="piechart"
+  var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+  chart.draw(data, options);
+}
+</script>
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+<script>
+  function style_display(data,dstatus){
+    var datalist = document.getElementsByClassName(data);
+      var i;
+      for (i = 0; i < datalist.length; i++) {
+        datalist[i].style.display = dstatus;
+
+      }
+  }
+  function filter1() {
+
+    var val_pass = document.getElementById("CHECK_PASS");
+    var val_fail = document.getElementById("CHECK_FAIL");
+    var val_nottested = document.getElementById("CHECK_NOTTESTED");
+    style_display("PASS","none");
+    style_display("FAIL","none");
+    style_display("NOTTESTED","none");
+    if (val_pass.checked == true){
+      style_display("PASS","");
+    }
+
+    if (val_fail.checked == true){
+      style_display("FAIL","");
+    }
+
+    if (val_nottested.checked == true){
+      style_display("NOTTESTED","");
+    }
+
+  }
+
+  //setInterval(filter1, 20000);
+
+
+</script>
+
+<style>
+.accordion {
+
+  color: #444;
+  cursor: pointer;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 17px;
+  transition: 0.4s;
+  border-bottom: solid 3px white;
+}
+
+.active, .accordion:hover {
+
+  background-color: #ccc;
+}
+
+.accordion {
+  padding: 5 5 5 18px;
+}
+.success_01 {
+  background-color: #dff0d8;
+}
+
+.fail_01 {
+  background-color: #f2dede;
+}
+
+.nottested_01 {
+  background-color: #fcf8e3;
+}
+
+.headercol {
+  background-color: #cfcdc4;
+}
+
+.modulecol {
+  background-color: #efeeeb;
+}
+
+.panel {
+  padding: 0 18px;
+  display: none;
+  background-color: white;
+  overflow: hidden;
+}
+
+.pre1 {
+  display: block;
+  font-family: monospace;
+  white-space: pre;
+  margin: 0 0;
+  padding: 0px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="col-sm-12">
+    <center><h2>DataPoem Automation Stats - 2025-03-03-14-33-45 </h2></center>
+
+  <div class="col-sm-6">
+    <div id="piechart"></div>
+  </div>
+
+  <div class="col-sm-6">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>PROPERTY NAME</th>
+          <th>PROPERTY VALUE</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Project</td><td>DataPoem</td></tr><tr><td>ExecutionDate</td><td>2025-03-03-14-33-45</td></tr><tr><td>Total_Module</td><td>2</td></tr><tr><td>Total_Time_Taken</td><td>0.63 mins</td></tr><tr><td>Current Env</td><td>https://qa.datapoem.ai/gupt-login</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col-sm-12">
+  </div>
+
+  <form class="form-inline">
+  <div class="col-sm-2">
+    <div class="checkbox" style="zoom:1.2;">
+      <label><input type="checkbox" id="CHECK_PASS" checked>PASSED</label>
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <div class="checkbox" style="zoom:1.2;">
+      <label><input type="checkbox" id="CHECK_FAIL" checked>FAILED</label>
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <div class="checkbox" style="zoom:1.2;">
+      <label><input type="checkbox" id="CHECK_NOTTESTED" checked>SKIPPED</label>
+    </div>
+  </div>
+  <div class="col-sm-6">
+    <button type="button" class="btn btn-info" onclick="filter1()">Filter Data</button>
+    <!-- <input type="submit" value="Execute" onclick="filter1()"> -->
+  </div>
+</form>
+ <div class="col-sm-12">
+  &nbsp
+  </div>
+
+
+
+
+
+<button type="button" class="accordion headercol"><b><div class="pre1"> MODULE                                        | TOTAL      | PASSED     | FAILED     | SKIPPED    | TIME TAKEN (mins) </div></b></button><div class="panel"></div><button type="button" class="accordion modulecol"><div class="pre1"> custom_budget_input                           |   1        |   0        |   1        |   0        |     0 </div></button><div class="panel"><div class="FAIL"><button type="button" class="accordion fail_01"><div class="pre1"> TC_070 - I click on "Custom budget input" and verify that the custom budget input fields are displayed correctly </div></button><div class="panel"><pre"><p></p><p></p><p>Failing step: And Dp: I verify if field "Pristine Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')" is displayed ... failed in 10.309s</p><p>Location: features/functionalitysuite/custom_budget_input.feature:49</p><p>Assertion Failed: '<class 'AssertionError'>':'Field 'Pristine Button' having xpath '//span[text()='pristine']/parent::div' is not displayed. Expected to be displayed':'<traceback object at 0x122795740>' occurred </p><p>Captured stdout:</p><p>Dp Server UI opened successfully with URL 'https://qa.datapoem.ai/gupt-login'</p><p>Successfully logged into DP Server UI with username 'OptimisationTesting@datapoem.com', password 'OptimisationTesting@datapoem.com'</p><p>Successfully Hovered mouse on element 'Solutions' with xpath '//span[normalize-space()='Future Planning']'</p><p>Successfully Hovered mouse on element 'Optimization' with xpath '//span[normalize-space()='Optimization']'</p><p>Successfully Clicked element 'Optimization' with xpath '//span[normalize-space()='Optimization']'</p><p>Field 'BBO Header text' having xpath '//span[contains(text(),'Budget Based Optimization')]' is found within '30' seconds</p><p>Successfully scrolled till 'Custom budget input' having xpath '//span[text()='Custom budget input']/parent::div'</p><p>Successfully added sleep for 2 seconds </p><p>Successfully Clicked element 'Custom budget input' with xpath '//span[text()='Custom budget input']/parent::div'</p><p>Field 'Step 1: Budget input options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')]' is displayed in UI  as Expected</p><p>Field 'Step 1.1: Optimization options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')]' is displayed in UI  as Expected</p><p></p><p>Captured stderr:</p><p>ERRORED DESC	::Field 'Pristine Button' having xpath '//span[text()='pristine']/parent::div' is not displayed. Expected to be displayed:</p><p>ERRORED MODULE	::<class 'AssertionError'>:</p><p>ERRORED FILE	::common_server_ui_steps.py:</p><p>ERRORED LINE	::400:</p><p></p><p>Captured logging:</p><p>INFO:root:Started step.name: Dp: I open dp Server and verify "LOGIN['FORGOT_PASSWORD']" xpath is visible</p><p>INFO:root:Input params for step: 'LOGIN['FORGOT_PASSWORD']'</p><p>INFO:root:Maximized the browser in control</p><p>INFO:root:Opening the URL 'https://qa.datapoem.ai/gupt-login'</p><p>INFO:root:found xpath //a[contains(text(),' Forgot Password ?')]</p><p>INFO:root:xpath //a[contains(text(),' Forgot Password ?')] exists</p><p>INFO:root:Opened https://qa.datapoem.ai/gupt-login DataPoem URL successfully</p><p>INFO:root:Dp Server UI opened successfully with URL 'https://qa.datapoem.ai/gupt-login'</p><p>INFO:root:Completed step.name: Dp: I open dp Server and verify "LOGIN['FORGOT_PASSWORD']" xpath is visible</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I login to dp and verify dashboard page opens</p><p>INFO:root:found xpath //input[@id='login-email']</p><p>INFO:root:Clearing text in xpath //input[@id='login-email']</p><p>INFO:root:found xpath //input[@id='login-email']</p><p>INFO:root:found text 'OptimisationTesting@datapoem.com' in //input[@id='login-email']</p><p>INFO:root:found xpath //input[@id='login-email']</p><p>INFO:root:found text '' in //input[@id='login-email']</p><p>INFO:root:Entered OptimisationTesting@datapoem.com in xpath //input[@id='login-email']</p><p>INFO:root:found xpath //input[@id='login-password']</p><p>INFO:root:Clearing text in xpath //input[@id='login-password']</p><p>INFO:root:found xpath //input[@id='login-password']</p><p>INFO:root:found text 'OptimisationTesting@datapoem.com' in //input[@id='login-password']</p><p>INFO:root:found xpath //input[@id='login-password']</p><p>INFO:root:found text '' in //input[@id='login-password']</p><p>INFO:root:Entered OptimisationTesting@datapoem.com in xpath //input[@id='login-password']</p><p>INFO:root:found xpath //button[contains(text(),' Sign in with email ')]</p><p>INFO:root:Clicked on xpath //button[contains(text(),' Sign in with email ')]</p><p>INFO:root:CREATED AUTHKEY</p><p>INFO:root:found xpath //h1[contains(text(),'Welcome')]/span</p><p>INFO:root:Successfully logged into DP Server UI with username 'OptimisationTesting@datapoem.com', password 'OptimisationTesting@datapoem.com'</p><p>INFO:root:Completed step.name: Dp: I login to dp and verify dashboard page opens</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I Hover Mouse on "Solutions" element with xpath "DASHBOARD['MODULES'].replace('~','Future Planning')"</p><p>INFO:root:Input params for step: 'Solutions', 'DASHBOARD['MODULES'].replace('~','Future Planning')'</p><p>INFO:root:found xpath //span[normalize-space()='Future Planning']</p><p>INFO:root:Hovering on element //span[normalize-space()='Future Planning']</p><p>INFO:root:Successfully Hovered mouse on element 'Solutions' with xpath '//span[normalize-space()='Future Planning']'</p><p>INFO:root:Completed step.name: Dp: I Hover Mouse on "Solutions" element with xpath "DASHBOARD['MODULES'].replace('~','Future Planning')"</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I Hover Mouse on "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')"</p><p>INFO:root:Input params for step: 'Optimization', 'DASHBOARD['MODULES'].replace('~','Optimization')'</p><p>INFO:root:found xpath //span[normalize-space()='Optimization']</p><p>INFO:root:Hovering on element //span[normalize-space()='Optimization']</p><p>INFO:root:Successfully Hovered mouse on element 'Optimization' with xpath '//span[normalize-space()='Optimization']'</p><p>INFO:root:Completed step.name: Dp: I Hover Mouse on "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')"</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I Click on field "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')"</p><p>INFO:root:Input params for step: 'Optimization', 'DASHBOARD['MODULES'].replace('~','Optimization')'</p><p>INFO:root:+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p><p>INFO:root:found xpath //span[normalize-space()='Optimization']</p><p>INFO:root:xpath //span[normalize-space()='Optimization'] exists</p><p>INFO:root:True</p><p>INFO:root:found xpath //span[normalize-space()='Optimization']</p><p>INFO:root:Clicked on xpath //span[normalize-space()='Optimization']</p><p>INFO:root:Successfully Clicked element 'Optimization' with xpath '//span[normalize-space()='Optimization']'</p><p>INFO:root:Completed step.name: Dp: I Click on field "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')"</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I explicitly wait for "30" seconds for field "BBO Header text" with xpath "BBO['BBO_TEXT'].replace('~','Budget Based Optimization')" to appear or clickable</p><p>INFO:root:Input params for step: '30', 'BBO Header text', 'BBO['BBO_TEXT'].replace('~','Budget Based Optimization')'</p><p>INFO:root:found xpath //span[contains(text(),'Budget Based Optimization')]</p><p>INFO:root:Field 'BBO Header text' having xpath '//span[contains(text(),'Budget Based Optimization')]' is found within '30' seconds</p><p>INFO:root:Completed step.name: Dp: I explicitly wait for "30" seconds for field "BBO Header text" with xpath "BBO['BBO_TEXT'].replace('~','Budget Based Optimization')" to appear or clickable</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I scroll down till element 'Custom budget input' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')' is visible</p><p>INFO:root:Input params for step: 'Custom budget input', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')'</p><p>INFO:root:scrolling till element Custom budget input with xpath ://span[text()='Custom budget input']/parent::div</p><p>INFO:root:Scrolling till element //span[text()='Custom budget input']/parent::div</p><p>INFO:root:found xpath //span[text()='Custom budget input']/parent::div</p><p>INFO:root:xpath Element //span[text()='Custom budget input']/parent::div is displayed</p><p>INFO:root://span[text()='Custom budget input']/parent::div is displayed on web page</p><p>INFO:root:Scrolling...</p><p>INFO:root:Successfully scrolled till 'Custom budget input' having xpath '//span[text()='Custom budget input']/parent::div'</p><p>INFO:root:Completed step.name: Dp: I scroll down till element 'Custom budget input' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')' is visible</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: Added sleep for "2" secs</p><p>INFO:root:Input params for step: '2'</p><p>INFO:root:Sleep 2 seconds has started.</p><p>INFO:root:Sleep 2 seconds has completed.</p><p>INFO:root:Successfully added sleep for 2 seconds </p><p>INFO:root:Completed step.name: Dp: Added sleep for "2" secs</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I Click on field "Custom budget input" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')"</p><p>INFO:root:Input params for step: 'Custom budget input', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')'</p><p>INFO:root:+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</p><p>INFO:root:found xpath //span[text()='Custom budget input']/parent::div</p><p>INFO:root:xpath //span[text()='Custom budget input']/parent::div exists</p><p>INFO:root:True</p><p>INFO:root:found xpath //span[text()='Custom budget input']/parent::div</p><p>INFO:root:Clicked on xpath //span[text()='Custom budget input']/parent::div</p><p>INFO:root:Successfully Clicked element 'Custom budget input' with xpath '//span[text()='Custom budget input']/parent::div'</p><p>INFO:root:Completed step.name: Dp: I Click on field "Custom budget input" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')"</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I verify if field "Step 1: Budget input options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1: Budget input options *')" is displayed</p><p>INFO:root:Input params for step: 'Step 1: Budget input options *', 'BBO['STEP_TITLE'].replace('~','Step 1: Budget input options *')'</p><p>INFO:root:found xpath //div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')]</p><p>INFO:root:xpath Element //div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')] is displayed</p><p>INFO:root:Field 'Step 1: Budget input options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1: Budget input options *')]' is displayed in UI as Expected</p><p>INFO:root:Completed step.name: Dp: I verify if field "Step 1: Budget input options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1: Budget input options *')" is displayed</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I verify if field "Step 1.1: Optimization options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1.1: Optimization options *')" is displayed</p><p>INFO:root:Input params for step: 'Step 1.1: Optimization options *', 'BBO['STEP_TITLE'].replace('~','Step 1.1: Optimization options *')'</p><p>INFO:root:found xpath //div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')]</p><p>INFO:root:xpath Element //div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')] is displayed</p><p>INFO:root:Field 'Step 1.1: Optimization options *' having xpath '//div[@class='n-step-title' and contains(text(),'Step 1.1: Optimization options *')]' is displayed in UI as Expected</p><p>INFO:root:Completed step.name: Dp: I verify if field "Step 1.1: Optimization options *" with xpath "BBO['STEP_TITLE'].replace('~','Step 1.1: Optimization options *')" is displayed</p><p>INFO:root:Status for Step : Status.passed</p><p>INFO:root:Started step.name: Dp: I verify if field "Pristine Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')" is displayed</p><p>INFO:root:Input params for step: 'Pristine Button', 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')'</p><p>ERROR:root:TIMEOUT: Unable to find xpath //span[text()='pristine']/parent::div</p><p>ERROR:root:Message: no such element: Unable to locate element: {"method":"xpath","selector":"//span[text()='pristine']/parent::div"}</p><p>  (Session info: chrome=133.0.6943.142); For documentation on this error, please visit: https://www.selenium.dev/documentation/webdriver/troubleshooting/errors#no-such-element-exception</p><p>Stacktrace:</p><p>0   chromedriver                        0x0000000104f7c2d4 cxxbridge1$str$ptr + 2739836</p><p>1   chromedriver                        0x0000000104f74934 cxxbridge1$str$ptr + 2708700</p><p>2   chromedriver                        0x0000000104ad5f90 cxxbridge1$string$len + 93360</p><p>3   chromedriver                        0x0000000104b1cde4 cxxbridge1$string$len + 383748</p><p>4   chromedriver                        0x0000000104b5de80 cxxbridge1$string$len + 650144</p><p>5   chromedriver                        0x0000000104b11060 cxxbridge1$string$len + 335232</p><p>6   chromedriver                        0x0000000104f44c38 cxxbridge1$str$ptr + 2512864</p><p>7   chromedriver                        0x0000000104f47f58 cxxbridge1$str$ptr + 2525952</p><p>8   chromedriver                        0x0000000104f2a578 cxxbridge1$str$ptr + 2404640</p><p>9   chromedriver                        0x0000000104f48818 cxxbridge1$str$ptr + 2528192</p><p>10  chromedriver                        0x0000000104f1af2c cxxbridge1$str$ptr + 2341588</p><p>11  chromedriver                        0x0000000104f64a60 cxxbridge1$str$ptr + 2643464</p><p>12  chromedriver                        0x0000000104f64be8 cxxbridge1$str$ptr + 2643856</p><p>13  chromedriver                        0x0000000104f745a8 cxxbridge1$str$ptr + 2707792</p><p>14  libsystem_pthread.dylib             0x000000018ce082e4 _pthread_start + 136</p><p>15  libsystem_pthread.dylib             0x000000018ce030fc thread_start + 8</p><p></p><p>ERROR:root:ERRORED DESC	::Field 'Pristine Button' having xpath '//span[text()='pristine']/parent::div' is not displayed. Expected to be displayed:</p><p></p><p>ERROR:root:ERRORED MODULE	::<class 'AssertionError'>:</p><p></p><p>ERROR:root:ERRORED FILE	::common_server_ui_steps.py:</p><p></p><p>ERROR:root:ERRORED LINE	::400:</p><p></p><p>INFO:root:Completed step.name: Dp: I verify if field "Pristine Button" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','pristine')" is displayed</p><p>INFO:root:Status for Step : Status.failed</p><p></p></pre"></div></div></div><button type="button" class="accordion modulecol"><div class="pre1"> login                                         |   1        |   1        |   0        |   0        |     0 </div></button><div class="panel"><div class="PASS"><button type="button" class="accordion success_01"><div class="pre1"> TC_001 - I verify the presence of the "Focused on results not just media metrics." text in login page </div></button><div class="panel"><pre"><p></p><p></p><p>@scenario.begin</p><p></p><p>  @TC_001 @regression @dp_fulltest</p><p>  Scenario: TC_001 - I verify the presence of the "Focused on results not just media metrics." text in login page</p><p>    Given Dp: I open website with "https://green.datapoem.ai" URL and verify "LOGIN['WELCOME_MESSAGE']" xpath is visible ... passed in 4.210s</p><p>    Then Dp: I verify if field "Banner" with xpath "LOGIN['BANNER_TEXT'].replace('~','Focused on results not just media metrics.')" is displayed ... passed in 0.016s</p><p></p><p>@scenario.end</p><p>--------------------------------------------------------------------------------</p><p></p><p>Captured stdout:</p><p>https://green.datapoem.ai</p><p>//h1[contains(text(),'Hey, hello')]/following-sibling::p[contains(text(),'Log into your account with below options')]</p><p>Field 'Banner' having xpath '//div[@class='carousel-inner']//div[@class='carousel-content']/h1[contains(text(),'Focused on results not just media metrics.')]' is displayed in UI  as Expected</p><p></p><p></p><p></p></pre"></div></div></div>
+
+</div>
+</div>
+
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; i < acc.length; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.display === "block") {
+      panel.style.display = "none";
+    } else {
+      panel.style.display = "block";
+    }
+  });
+}
+</script>
+
+</body>
+</html>
+
+
