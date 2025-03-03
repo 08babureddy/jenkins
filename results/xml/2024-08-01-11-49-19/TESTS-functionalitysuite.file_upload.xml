@@ -1,0 +1,94 @@
+<testsuite name="functionalitysuite.file_upload.file upload functionality test cases" tests="1" errors="0" failures="0" skipped="0" time="42.634262" timestamp="2024-08-01T13:07:35.710018" hostname="BabuReddy.local"><testcase classname="functionalitysuite.file_upload.file upload functionality test cases" name="I verify that different brand files should not get upload and appears error message" status="passed" time="42.634262"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @TC_101 @regression @dp_fulltest
+  Scenario: I verify that different brand files should not get upload and appears error message
+    Given Dp: I open dp Server and verify "LOGIN['FORGOT_PASSWORD']" xpath is visible ... passed in 4.915s
+    And Dp: I login to dp and verify dashboard page opens ... passed in 6.067s
+    And Dp: I Hover Mouse on "Solutions" element with xpath "DASHBOARD['MODULES'].replace('~','Future Planning')" ... passed in 1.328s
+    And Dp: I Hover Mouse on "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')" ... passed in 0.303s
+    And Dp: I Click on field "Optimization" element with xpath "DASHBOARD['MODULES'].replace('~','Optimization')" ... passed in 0.779s
+    Then Dp: I explicitly wait for "20" seconds for field "custom budget field" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Custom budget input')" to appear or clickable ... passed in 4.634s
+    And Dp: I select dropdown value with " BnW HAIR Dove " option by scrolling in field "Brand" with xpath "BBO['BBO_DRPDWNS'].replace('~','Brand')" ... passed in 1.848s
+    And Dp: Added sleep for "2" secs ... passed in 2.006s
+    Then Dp: I explicitly wait for "20" seconds for field "File upload" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','File upload')" to appear or clickable ... passed in 0.025s
+    And Dp: I scroll down till element 'Selective' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Selective')' is visible ... passed in 0.028s
+    And Dp: I Click on field "Selective" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Selective')" ... passed in 0.791s
+    And Dp: I scroll down till element 'No of months' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"Number of months")' is visible ... passed in 0.020s
+    And Dp: I select dropdown value with "1" option by scrolling in field "No of months" with xpath "BBO['BBO_DRPDWNS'].replace('~','Number of months')" ... passed in 0.028s
+    And Dp: I scroll down till element 'Start month' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"Start month")' is visible ... passed in 0.019s
+    And Dp: Added sleep for "2" secs ... passed in 2.007s
+    And Dp: I select dropdown value with "subsequentmonth" option by scrolling in field "Start month" with xpath "BBO['BBO_DRPDWNS'].replace('~',"Start month")" ... passed in 1.881s
+    And Dp: I Click on field "Download file" element with xpath "UPLOAD_BUDGET['DOWNLOAD_UPLOAD_FILE'].replace('~',"Download file")" ... passed in 0.780s
+    Then Dp: I explicitly wait for "10" seconds for field "Success: File successfully downloaded" with xpath "BBO['SUCCESS_ALERTS'].replace('~','Success: File successfully downloaded')" to appear or clickable ... passed in 1.041s
+    And Dp: I scroll down till element 'Brand' having xpath 'BBO['BBO_DRPDWNS'].replace('~','Brand')' is visible ... passed in 0.020s
+    And Dp: Added sleep for "2" secs ... passed in 2.006s
+    And Dp: I select dropdown value with " NIC ICE Klondike " option by scrolling in field "Brand" with xpath "BBO['BBO_DRPDWNS'].replace('~','Brand')" ... passed in 1.895s
+    And Dp: Added sleep for "2" secs ... passed in 2.006s
+    Then Dp: I explicitly wait for "20" seconds for field "File upload" with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','File upload')" to appear or clickable ... passed in 0.021s
+    And Dp: I scroll down till element 'Selective' having xpath 'BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Selective')' is visible ... passed in 0.026s
+    And Dp: I Click on field "Selective" element with xpath "BBO['BUDGET_UPLOAD_BUTTONS'].replace('~','Selective')" ... passed in 0.780s
+    And Dp: I scroll down till element 'No of months' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"Number of months")' is visible ... passed in 0.020s
+    And Dp: I select dropdown value with "1" option by scrolling in field "No of months" with xpath "BBO['BBO_DRPDWNS'].replace('~','Number of months')" ... passed in 0.023s
+    And Dp: I scroll down till element 'Start month' having xpath 'BBO['BBO_DRPDWNS'].replace('~',"Start month")' is visible ... passed in 0.016s
+    And Dp: Added sleep for "2" secs ... passed in 2.006s
+    And Dp: I select dropdown value with "subsequentmonth" option by scrolling in field "Start month" with xpath "BBO['BBO_DRPDWNS'].replace('~',"Start month")" ... passed in 1.891s
+    And Dp: I enter unique scenario name "rt_tc101" in field "Enter Scenario Name" with xpath "BBO['SCENARIO_NAME']" ... passed in 0.137s
+    And Dp: I Upload a excel file in budget file upload with "Min" budget ... passed in 0.073s
+    Then Dp: I explicitly wait for "30" seconds for field "Danger message" with xpath "BBO['ENTERED_BUDGET_DANGER_MESSAGE'].replace('~','Step 2.1: Upload the filled in template *')" to appear or clickable ... passed in 1.557s
+    And Dp: I get value of field "Danger message" with xpath "BBO['ENTERED_BUDGET_DANGER_MESSAGE'].replace('~','Step 2.1: Upload the filled in template *')" by "text" and verify "Data and Brand Name do not match." presence ... passed in 0.026s
+    And Dp: I scroll down till element 'Profile' having xpath 'DASHBOARD['MODULES'].replace('~','Profile')' is visible ... passed in 0.022s
+    And Dp: I Hover Mouse on "Profile" element with xpath "DASHBOARD['MODULES'].replace('~','Profile')" ... passed in 0.283s
+    And Dp: I Click on field "Logout" element with xpath "DASHBOARD['MODULES'].replace('~','Logout')" ... passed in 0.784s
+    And Dp: I explicitly wait for "30" seconds for field "Hey,hello text" with xpath "LOGIN['WELCOME_MESSAGE']" to appear or clickable ... passed in 0.522s
+    Then Dp: I verify if field "Hey,hello text" with xpath "LOGIN['WELCOME_MESSAGE']" is displayed ... passed in 0.019s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+Dp Server UI opened successfully with URL 'https://green.datapoem.ai/gupt-login'
+Successfully logged into CMS Server UI with username 'OptimisationTesting@datapoem.com', password 'OptimisationTesting@datapoem.com'
+Successfully Hovered mouse on element 'Solutions' with xpath '//span[normalize-space()='Future Planning']'
+Successfully Hovered mouse on element 'Optimization' with xpath '//span[normalize-space()='Optimization']'
+Successfully Clicked element 'Optimization' with xpath '//span[normalize-space()='Optimization']'
+Field 'custom budget field' having xpath '//span[text()='Custom budget input']/parent::div' is found within '20' seconds
+Successfully selected ' BnW HAIR Dove ' option in Field 'Brand' having xpath '//div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully added sleep for 2 seconds 
+Field 'File upload' having xpath '//span[text()='File upload']/parent::div' is found within '20' seconds
+Successfully scrolled till 'Selective' having xpath '//span[text()='Selective']/parent::div'
+Successfully Clicked element 'Selective' with xpath '//span[text()='Selective']/parent::div'
+Successfully scrolled till 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully selected '1' option in Field 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully scrolled till 'Start month' having xpath '//div[normalize-space()='Start month']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully added sleep for 2 seconds 
+Successfully selected 'September 2024' option in Field 'Start month' having xpath '//div[normalize-space()='Start month']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully Clicked element 'Download file' with xpath '//button/span[contains(text(),'Download file')]'
+Field 'Success: File successfully downloaded' having xpath '//div[@class='success-alert']//span[ contains(text(),'Success: File successfully downloaded')]' is found within '10' seconds
+Successfully scrolled till 'Brand' having xpath '//div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully added sleep for 2 seconds 
+Successfully selected ' NIC ICE Klondike ' option in Field 'Brand' having xpath '//div[normalize-space()='Brand']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully added sleep for 2 seconds 
+Field 'File upload' having xpath '//span[text()='File upload']/parent::div' is found within '20' seconds
+Successfully scrolled till 'Selective' having xpath '//span[text()='Selective']/parent::div'
+Successfully Clicked element 'Selective' with xpath '//span[text()='Selective']/parent::div'
+Successfully scrolled till 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully selected '1' option in Field 'No of months' having xpath '//div[normalize-space()='Number of months']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully scrolled till 'Start month' having xpath '//div[normalize-space()='Start month']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully added sleep for 2 seconds 
+Successfully selected 'September 2024' option in Field 'Start month' having xpath '//div[normalize-space()='Start month']/following-sibling::div[@class='dropdownWrapper']//div[contains(@class,'selected text')]'
+Successfully entered text 'rt_tc101_01082024_130732' in Field 'Enter Scenario Name' having xpath '//input[@placeholder='Enter here']'
+834.5329999999999 315.999
+Successfully uploaded the '/Users/babureddy/Documents/bdd_testing/downloads/Optimization-BnW HAIR Dove.xlsx' file in Field 'Upload File' having xpath '//input[@type='file']'
+Field 'Danger message' having xpath '//div[@class='n-step-title' and contains(text(),'Step 2.1: Upload the filled in template *')]/parent::div[@class='n-step-card']/following-sibling::div//div[@class='danger-alert']//span' is found within '30' seconds
+Value 'Data and Brand Name do not match.' found by 'text' in field 'Danger message' having xpath '//div[@class='n-step-title' and contains(text(),'Step 2.1: Upload the filled in template *')]/parent::div[@class='n-step-card']/following-sibling::div//div[@class='danger-alert']//span'
+Expected Value 'Data and Brand Name do not match.' found in field 'Danger message' having xpath '//div[@class='n-step-title' and contains(text(),'Step 2.1: Upload the filled in template *')]/parent::div[@class='n-step-card']/following-sibling::div//div[@class='danger-alert']//span' found by 'text'
+Successfully scrolled till 'Profile' having xpath '//span[normalize-space()='Profile']'
+Successfully Hovered mouse on element 'Profile' with xpath '//span[normalize-space()='Profile']'
+Successfully Clicked element 'Logout' with xpath '//span[normalize-space()='Logout']'
+Field 'Hey,hello text' having xpath '//h1[contains(text(),'Hey, hello')]/following-sibling::p[contains(text(),'Log into your account with below options')]' is found within '30' seconds
+Field 'Hey,hello text' having xpath '//h1[contains(text(),'Hey, hello')]/following-sibling::p[contains(text(),'Log into your account with below options')]' is displayed in UI  as Expected
+
+]]>
+</system-out></testcase></testsuite>
