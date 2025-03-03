@@ -15,19 +15,28 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-            def test_output = sh(script: '''
-                        source venv/bin/activate && python -m behave --tags ${tagname}
-                    ''', returnStdout: true).trim()
+                    // Run behave and store output
+                    def test_output = sh(
+                        script: '''
+                            source venv/bin/activate
+                            python -m behave --tags ${tagname} 2>&1 | tee output.log
+                        ''',
+                        returnStdout: true
+                    ).trim()
 
-                    echo "FULL OUTPUT:\n${test_output}"  // Debugging step
+                    // Extract folder name using awk for more reliable parsing
+                    def current_run_folder = sh(
+                        script: '''
+                            awk '/TEST_REPORT_PATH=/ {print $1}' output.log | cut -d'=' -f2
+                        ''',
+                        returnStdout: true
+                    ).trim()
 
-                    def current_run_folder = sh(script: '''
-                        echo "${test_output}" | grep "TEST_REPORT_PATH=" | cut -d "=" -f2
-                    ''', returnStdout: true).trim()
-
-                    echo "Captured Folder Name: ${current_run_folder}"
+                    // Set environment variable
                     env.CURRENT_RUN_FOLDER = current_run_folder
-        }
+                    
+                    echo "Current Run Folder: ${env.CURRENT_RUN_FOLDER}"
+                }
                 
             }
         }
