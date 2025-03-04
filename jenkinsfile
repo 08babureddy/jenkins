@@ -129,7 +129,7 @@ pipeline {
                         ${tableRows}
                     </table>
 
-                    <p>Click <a href="file://${html_folder_path}/${latest_html_file_name}">here</a> to view the detailed HTML report.</p>
+                    <p> <i> Please find the attachment to view the detailed html report.</i> </p>
                 </body>
                 </html>
             """
